@@ -1,0 +1,60 @@
+<div id="outer">
+  <form ng-submit="submit()" id="myform">
+    <input type="text" ng-model="path" class="form-control big-form" id="searchbox" name="searchbox" autofocus="autofocus" />
+  </form>
+  <div ng-repeat="(i, endpoint) in endpoints">
+    <div class="col-sm-{{12/endpoints.length}} content-column" style="padding-right:10px;">
+
+      <section ng-controller="ScriptEditor">
+
+        <div class="response shadow rounded">
+          <h4 class="code-title code-title-silver rounded">
+            <span class="status {{'status_alert_'+responses[i].status}}">
+              <i ng-hide="responses[endpoint].status" class="status-icon icon-remove"></i>
+              <i ng-show="responses[endpoint].status" class="status-icon icon-link"></i>
+            </span>
+            <span class="title">&nbsp;{{endpoint}}</span>
+          </h4>
+          <div class="code rounded" ng-show="responses[endpoint].summary">
+            <div ng-model="responses[endpoint].summary" ng-controller="AceEditor" readonly="readonly" ui-ace="{
+              useWrapMode : true,
+              showGutter: false,
+              highlightActive: false,
+              theme:'chrome',
+              mode: 'perl',
+              onLoad: aceLoaded,
+              onChange: aceChanged
+            }"></div>
+          </div>
+        </div>
+
+        <div class="assertion shadow rounded" style="margin-top:-10px;" ng-controller="MapController">
+          <div ng-switch on="i">
+            <leaflet ng-switch-when="0" id="map0" width="100%" height="200px" geojson="geojson" defaults="defaults"></leaflet>
+            <leaflet ng-switch-when="1" id="map1" width="100%" height="200px" geojson="geojson" defaults="defaults"></leaflet>
+            <leaflet ng-switch-when="2" id="map2" width="100%" height="200px" geojson="geojson" defaults="defaults"></leaflet>
+          </div>
+        </div>
+
+        <div class="assertion shadow rounded" ng-show="responses[endpoint].body" style="margin-top:-10px;">
+          <div class="code">
+            <div ng-model="responses[endpoint].body" ng-controller="AceEditor" readonly="readonly" ui-ace="{
+              useWrapMode : true,
+              showGutter: false,
+              showPrintGuide: false,
+              highlightActive: false,
+              theme:'chrome',
+              mode: 'json',
+              onLoad: aceLoaded,
+              onChange: aceChanged
+            }"></div>
+          </div>
+        </div>
+
+        <pre ng-show="responses[endpoint].error" class="message">{{responses[endpoint].error}}</pre>
+
+      </section>
+
+    </div>
+  </div>
+</div>

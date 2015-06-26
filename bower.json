@@ -1,0 +1,25 @@
+{
+  "name": "cms",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.0-rc1",
+    "angular": "~1.0.7",
+    "angular-resource": "~1.0.7",
+    "angular-sanitize": "~1.0.7",
+    "restangular": "~1.1.0",
+    "underscore": "~1.5.1",
+    "font-awesome": "~3.2.1",
+    "ace-builds": "~1.1.1",
+    "angular-ui-ace": "~0.0.4",
+    "ngprogress": "~0.0.3",
+    "angular-leaflet": "~0.8.1"
+  }
+}

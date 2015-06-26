@@ -1,0 +1,44 @@
+<!doctype html>
+<html ng-app="compare">
+  <head>
+    <!--<script src="bower_components/requirejs/require.js"></script>-->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
+    <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="bower_components/ngprogress/ngProgress.js"></script>
+    <script type="text/javascript" src="bower_components/restangular/dist/restangular.min.js"></script>
+
+    <script type="text/javascript" src="bower_components/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+
+    <script type="text/javascript" src="bower_components/angular-leaflet/dist/angular-leaflet-directive.min.js"></script>
+
+    <link rel="stylesheet" href="style/css.css" />
+
+    <!--<script src="/js/uri.js"></script>
+    <script src="/js/prettifyDirective.js"></script>-->
+
+    <script src="app/app.js"></script>
+    <script src="app/controllers/AceEditor.js"></script>
+    <!--<script src="app/controllers/ResultEditor.js"></script>-->
+    <script src="app/controllers/ScriptEditor.js"></script>
+    <script src="app/controllers/MainController.js"></script>
+    <script src="app/controllers/MapController.js"></script>
+
+    <!--<script type="text/javascript" src="bower_components/coffee-script/lib/coffee-script/browser.js"></script>-->
+  </head>
+  <body>
+
+    <div ng-view=""></div>
+
+  </body>
+</html>
