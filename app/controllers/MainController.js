@@ -1,16 +1,10 @@
 
 function MainController( $scope, $location, $http, $rootScope ){
 
-  // console.log('load');
-
   $scope.submit = function(){
     $location.path( $scope.path );
     $scope.request( $scope.path );
   };
-
-  // $scope.$watch( 'path', function(){
-  //   $scope.request( $scope.path );
-  // });
 
   $scope.endpoints = [
     'http://pelias.mapzen.com'
@@ -46,7 +40,9 @@ function MainController( $scope, $location, $http, $rootScope ){
           headers: { 'Accept': 'application/json' }
         })
         .success(function(data, status, headers, config) {
+          
           // console.log( 'res', data, status );
+          
           $scope.responses[$scope.endpoints[i]] = {
             status: status,
             body: JSON.stringify( data, null, 2 ) + '\n\n',
@@ -79,7 +75,6 @@ function MainController( $scope, $location, $http, $rootScope ){
     $location.path( '/search?size=20&input=london, uk' );
   }
 
-  // $scope.path = decodeURIComponent($location.url());
   $scope.path = decodeURIComponent($location.url());
   document.getElementById("searchbox").focus();
   $scope.submit();
@@ -97,9 +92,6 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
   console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried.');
 
-  // $scope.$on('$viewContentLoaded', function() {
-  //   createMaps();
-  // });
 }
 
 function leftPad( text, width, pad ){
@@ -126,19 +118,3 @@ function summaryFor( data ){
 
   return summary;
 }
-
-// function createMaps(){
-//   var map = L.map('map0', {
-//       // zoom: $rootScope.geobase.zoom,
-//       zoomControl: false,
-//       // center: [$rootScope.geobase.lat, $rootScope.geobase.lon],
-//       maxBounds: L.latLngBounds(L.latLng(-80, -180), L.latLng(82, 180))
-//   });
-
-//   L.tileLayer('//{s}.tiles.mapbox.com/v3/randyme.i0568680/{z}/{x}/{y}.png', {
-//       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//       maxZoom: 18,
-//       minZoom: 3,
-//       noWrap: true
-//   }).addTo(map);
-// }

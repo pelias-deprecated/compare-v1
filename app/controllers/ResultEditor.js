@@ -55,7 +55,6 @@ function ResultEditor( $scope, CiaoService, $http, progressbar ) {
 
             if( res.error ){
               console.error( res.error );
-              // $scope.script.result.code = res.error;
               $scope.script.response = {
                 status: 0,
                 headers: '',
@@ -73,7 +72,6 @@ function ResultEditor( $scope, CiaoService, $http, progressbar ) {
               $scope.script.response.headers = angular.toJson( res.response.headers, 2 );
               $scope.script.response.body = res.response.body;
 
-              // console.log( 'a', typeof res.response.body );
               if( res.response.body && res.response.body.substr(0,1) === '{' ){
                 $scope.script.response.body = angular.toJson( angular.fromJson( res.response.body ), 2 )
               }
@@ -88,26 +86,4 @@ function ResultEditor( $scope, CiaoService, $http, progressbar ) {
          });
 
   });
-
-  // CiaoService.one( 'request' ).post().then( function( data ) {
-  //   $scope.resource = data;
-  //   $scope.script.request.code = angular.toJson( data.request, 2 );
-  //   $scope.script.response = {
-  //     status: data.response.status,
-  //     headers: angular.toJson( data.response.headers, 2 ),
-  //     body: angular.toJson( data.response.body, 2 )
-  //   }
-  // });
-    // console.log( 'got event', data );
-  
-
-  // CiaoService.one( 'request' ).get().then( function( data ) {
-  //   $scope.resource = data;
-  //   $scope.script.request.code = angular.toJson( data.request, 2 );
-  //   $scope.script.response = {
-  //     status: data.response.status,
-  //     headers: angular.toJson( data.response.headers, 2 ),
-  //     body: angular.toJson( data.response.body, 2 )
-  //   }
-  // });
 }

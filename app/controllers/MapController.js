@@ -1,8 +1,6 @@
 
 function MapController( $scope, $rootScope, leafletData ){
 
-  // console.log( $scope.endpoint );
-
   angular.extend($scope, {
     defaults: {
       scrollWheelZoom: false,
@@ -13,7 +11,6 @@ function MapController( $scope, $rootScope, leafletData ){
   });
 
   $rootScope.$on( 'geojson', function( ev, geojson ){
-
 
     if( geojson.endpoint == $scope.endpoint ){
       // console.log( 'on', geojson );
@@ -40,7 +37,6 @@ function MapController( $scope, $rootScope, leafletData ){
   $scope.centerJSON = function( i, geojson ) {
 
     // console.log( 'centerJSON', leafletData.getMap.toString(), Object.keys(leafletData) );
-
     leafletData.getMap( 'map'+i ).then( function(map) {
 
       map.dragging.disable();
