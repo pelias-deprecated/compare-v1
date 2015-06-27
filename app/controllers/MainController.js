@@ -4,7 +4,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   // console.log('load');
 
   $scope.submit = function(){
-    // $location.path( $scope.path );
+    $location.path( $scope.path );
     $scope.request( $scope.path );
   };
 
@@ -20,16 +20,29 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   $scope.responses = {};
 
-  $http.defaults.transformRequest = function(i){ return i; }
+  function getUrlVars(url){
+    var vars = {};
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++){
+      var hash = hashes[i].split('=');
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
 
   $scope.request = function( path ){
 
     $scope.responses = {};
     $scope.endpoints.forEach( function( endpoint, i ){
+
+      var fullpath = endpoint + path;
+      var uri = fullpath.slice(0, fullpath.indexOf('?'));
+      var params = getUrlVars( endpoint + path );
+      params['callback'] = 'JSON_CALLBACK';
+
       $http
-        .jsonp( endpoint + path, {
-          method: 'GET',
-          params: { callback: "JSON_CALLBACK",  },
+        .jsonp( uri, {
+          params: params,
           headers: { 'Accept': 'application/json' }
         })
         .success(function(data, status, headers, config) {
@@ -40,6 +53,8 @@ function MainController( $scope, $location, $http, $rootScope ){
             summary: summaryFor( data )
           };
 
+          console.log( 'uri:', uri );
+          console.log( 'params:', params );
           console.log( summaryFor( data ) );
 
           $rootScope.$emit( 'geojson', {
