@@ -15,7 +15,8 @@
     "font-awesome": "~4.x",
     "ace-builds": "~1.1.1",
     "angular-ui-ace": "~0.0.4",
-    "angular-leaflet": "~0.8.1"
+    "angular-leaflet": "~0.8.1",
+    "uri.js": "~1.15.1"
   },
   "resolutions": {
     "angular": "1.0.8",

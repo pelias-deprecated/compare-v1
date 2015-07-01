@@ -14,28 +14,27 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   $scope.responses = {};
 
-  function getUrlVars(url){
-    var vars = {};
-    var hashes = url.slice(url.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++){
-      var hash = hashes[i].split('=');
-      vars[hash[0]] = hash[1];
-    }
-    return vars;
-  }
-
   $scope.request = function( path ){
+
+    // hack!? manually encode text to ensure that
+    // ampersands and other reserved chars encode correctly
+    var safePath = path.replace( /input=(.*)/i, function(i){
+      return i.substr(0,6) + encodeURIComponent( i.substr(6) );
+    });
 
     $scope.responses = {};
     $scope.endpoints.forEach( function( endpoint, i ){
 
-      var fullpath = endpoint + path;
-      var uri = fullpath.slice(0, fullpath.indexOf('?'));
-      var params = getUrlVars( endpoint + path );
+      var uri = URI(endpoint + safePath);
+      var target = uri.scheme() + '://' + uri.host() + uri.path();
+      var params = uri.search(true);
       params['callback'] = 'JSON_CALLBACK';
 
+      console.log( 'target:', target );
+      console.log( 'params:', params );
+
       $http
-        .jsonp( uri, {
+        .jsonp( target, {
           params: params,
           headers: { 'Accept': 'application/json' }
         })
