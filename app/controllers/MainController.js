@@ -8,7 +8,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   $scope.endpoints = [
     'http://pelias.mapzen.com'
-    ,'http://pelias.stage.mapzen.com'
+    ,'http://pelias.bigdev.mapzen.com'
     // ,'http://pelias.dev.mapzen.com'
   ];
 
