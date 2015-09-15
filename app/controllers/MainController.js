@@ -18,7 +18,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
     // hack!? manually encode text to ensure that
     // ampersands and other reserved chars encode correctly
-    var safePath = path.replace( /input=(.*)/i, function(i){
+    var safePath = path.replace( /text=(.*)/i, function(i){
       return i.substr(0,6) + encodeURIComponent( i.substr(6) );
     });
 
