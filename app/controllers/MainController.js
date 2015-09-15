@@ -71,7 +71,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   var path = $location.path();
   if( !path ){
-    $location.path( '/v1/search?api_key=pelias-YOUR_API_KEY_HERE&size=20&text=london, uk' );
+    $location.path( '/v1/search?api_key=pelias-D7WkrQc&size=20&text=london, uk' );
   }
 
   $scope.path = decodeURIComponent($location.url());
