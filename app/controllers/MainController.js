@@ -28,13 +28,13 @@ function MainController( $scope, $location, $http, $rootScope ){
       var uri = URI(endpoint + safePath);
       var target = uri.scheme() + '://' + uri.host() + uri.path();
       var params = uri.search(true);
-      params['callback'] = 'JSON_CALLBACK';
 
       console.log( 'target:', target );
       console.log( 'params:', params );
 
-      $http
-        .jsonp( target, {
+      $http({
+          url: target,
+          method: 'GET',
           params: params,
           headers: { 'Accept': 'application/json' }
         })
@@ -71,7 +71,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   var path = $location.path();
   if( !path ){
-    $location.path( '/search?size=20&input=london, uk' );
+    $location.path( '/v1/search?api_key=pelias-YOUR_API_KEY_HERE&size=20&text=london, uk' );
   }
 
   $scope.path = decodeURIComponent($location.url());
@@ -107,7 +107,7 @@ function summaryFor( data ){
   if( data && Array.isArray( data.features ) ){
     var maxWidth = String(data.features.length).length;
     data.features.forEach( function( feat, i ){
-      summary += leftPad( i+1, maxWidth, ' ' ) + ')\t' + feat.properties.text + '\n';
+      summary += leftPad( i+1, maxWidth, ' ' ) + ')\t' + feat.properties.label + '\n';
     });
   }
 
