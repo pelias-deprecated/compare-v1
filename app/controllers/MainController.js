@@ -6,12 +6,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.request( $scope.path );
   };
 
-  $scope.endpoints = [
-    'http://pelias.mapzen.com'
-    ,'http://pelias.bigdev.mapzen.com'
-    // ,'http://pelias.dev.mapzen.com'
-  ];
-
+  $scope.endpoints = [];
   $scope.responses = {};
 
   $scope.request = function( path ){
@@ -69,15 +64,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     });
   };
 
-  var path = $location.path();
-  if( !path ){
-    $location.path( '/v1/search?api_key=pelias-D7WkrQc&size=20&text=london, uk' );
-  }
-
-  $scope.path = decodeURIComponent($location.url());
-  document.getElementById("searchbox").focus();
-  $scope.submit();
-
+  // start of endpoints //
   // export global function to get/set endpoints
   window.getEndpoints = function(){
     return $scope.endpoints;
@@ -86,10 +73,40 @@ function MainController( $scope, $location, $http, $rootScope ){
     if( !Array.isArray( endpoints ) ){
       return console.error( 'invalid array, try again' );
     }
-    $scope.endpoints = endpoints;
+    window.saveEndpoints( endpoints );
+    window.loadEndpoints();
     $scope.submit();
   };
-  console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried.');
+  window.resetEndpoints = function(){
+    window.saveEndpoints(['http://pelias.mapzen.com','http://pelias.bigdev.mapzen.com']);
+    window.loadEndpoints();
+  };
+  window.saveEndpoints = function( endpoints ){
+    window.localStorage.setItem( "endpoints", endpoints.join(',') );
+    console.info( 'saved to localStorage:', endpoints.join(',') );
+  };
+  window.loadEndpoints = function(){
+    var endpoints = window.localStorage.getItem( "endpoints" );
+    console.info( 'loaded from localStorage:', endpoints );
+    if( 'string' === typeof endpoints ){
+      $scope.endpoints = endpoints.split(',');
+    } else {
+      window.resetEndpoints();
+    }
+  };
+  console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried, or use resetEndpoints() to reset to defaults');
+  window.loadEndpoints();
+  console.info( 'using endpoints:', $scope.endpoints );
+  // end of endpoints //
+
+  var path = $location.path();
+  if( !path ){
+    $location.path( '/v1/search?api_key=pelias-D7WkrQc&size=20&text=london, uk' );
+  }
+
+  $scope.path = decodeURIComponent($location.url());
+  document.getElementById("searchbox").focus();
+  $scope.submit();
 
 }
 
