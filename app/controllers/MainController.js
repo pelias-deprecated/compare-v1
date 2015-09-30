@@ -6,6 +6,12 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.request( $scope.path );
   };
 
+  $scope.keys = {
+    'https://search.mapzen.com': 'search-ahqsC9E',
+    'http://pelias.mapzen.com': 'pelias-D7WkrQc',
+    'http://pelias.bigdev.mapzen.com': ''
+  };
+
   $scope.endpoints = [];
   $scope.responses = {};
 
@@ -24,6 +30,13 @@ function MainController( $scope, $location, $http, $rootScope ){
       var target = uri.scheme() + '://' + uri.host() + uri.path();
       var params = uri.search(true);
 
+      if( !params.hasOwnProperty( 'api_key' ) ){
+        var key = $scope.keys[ uri.scheme() + '://' + uri.host() ];
+        if( key ){
+          params.api_key = key;
+        }
+      }
+
       console.log( 'target:', target );
       console.log( 'params:', params );
 
@@ -34,9 +47,9 @@ function MainController( $scope, $location, $http, $rootScope ){
           headers: { 'Accept': 'application/json' }
         })
         .success(function(data, status, headers, config) {
-          
+
           // console.log( 'res', data, status );
-          
+
           $scope.responses[$scope.endpoints[i]] = {
             status: status,
             body: JSON.stringify( data, null, 2 ) + '\n\n',
@@ -78,7 +91,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.submit();
   };
   window.resetEndpoints = function(){
-    window.saveEndpoints(['http://pelias.mapzen.com','http://pelias.bigdev.mapzen.com']);
+    window.saveEndpoints(['https://search.mapzen.com','http://pelias.mapzen.com','http://pelias.bigdev.mapzen.com']);
     window.loadEndpoints();
   };
   window.saveEndpoints = function( endpoints ){
@@ -101,7 +114,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   var path = $location.path();
   if( !path ){
-    $location.path( '/v1/search?api_key=pelias-D7WkrQc&size=20&text=london, uk' );
+    $location.path( '/v1/search?size=20&text=london, uk' );
   }
 
   $scope.path = decodeURIComponent($location.url());
