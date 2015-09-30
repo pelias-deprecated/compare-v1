@@ -114,7 +114,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   var path = $location.path();
   if( !path ){
-    $location.path( '/v1/search?size=20&text=london, uk' );
+    $location.path( '/v1/search?text=london, uk' );
   }
 
   $scope.path = decodeURIComponent($location.url());
