@@ -108,6 +108,14 @@ function MainController( $scope, $location, $http, $rootScope ){
     }
   };
   console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried, or use resetEndpoints() to reset to defaults');
+
+  var currentVersion = 1;
+  var version = window.localStorage.getItem('version');
+  if( isNaN(version) || version < currentVersion ){
+    window.resetEndpoints();
+    window.localStorage.setItem('version',currentVersion);
+  }
+
   window.loadEndpoints();
   console.info( 'using endpoints:', $scope.endpoints );
   // end of endpoints //
