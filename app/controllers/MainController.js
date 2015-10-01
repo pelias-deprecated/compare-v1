@@ -111,7 +111,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   var currentVersion = 1;
   var version = window.localStorage.getItem('version');
-  if( isNaN(version) || version < currentVersion ){
+  if( isNaN(version) || parseInt( version, 10 ) < currentVersion ){
     window.resetEndpoints();
     window.localStorage.setItem('version',currentVersion);
   }
