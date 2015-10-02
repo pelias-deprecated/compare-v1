@@ -7,6 +7,15 @@
 
       <section ng-controller="ScriptEditor">
 
+        <div class="messages">
+          <div class="alert alert-danger" ng-repeat="message in responses[endpoint].body.geocoding.errors">
+            {{message}}
+          </div>
+          <div class="alert alert-warning" ng-repeat="message in responses[endpoint].body.geocoding.warnings">
+            {{message}}
+          </div>
+        </div>
+
         <div class="response shadow rounded">
           <h4 class="code-title code-title-silver rounded">
             <span class="status {{'status_alert_'+responses[i].status}}">
@@ -38,7 +47,7 @@
 
         <div class="assertion shadow rounded" ng-show="responses[endpoint].body" style="margin-top:-10px;">
           <div class="code">
-            <div ng-model="responses[endpoint].body" ng-controller="AceEditor" readonly="readonly" ui-ace="{
+            <div ng-model="responses[endpoint].bodyString" ng-controller="AceEditor" readonly="readonly" ui-ace="{
               useWrapMode : true,
               showGutter: false,
               showPrintGuide: false,

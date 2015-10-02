@@ -40,40 +40,52 @@ function MainController( $scope, $location, $http, $rootScope ){
       console.log( 'target:', target );
       console.log( 'params:', params );
 
+      var responseParser = function(data, status, headers, config) {
+
+        // error
+        if( !data || !data.geocoding ){
+          console.log( 'jsonp error', endpoint + path );
+          console.log( status, headers, data );
+
+          // mock response to reuse the UI logic
+
+          var message = 'failed to load json';
+          if( data && data.error ){ message = data.error; }
+
+          data = {
+            geocoding: {
+              errors: [ status + ' ' + message ]
+            }
+          }
+        }
+
+        $scope.responses[$scope.endpoints[i]] = {
+          status: status,
+          body: data,
+          bodyString: JSON.stringify( data, null, 2 ) + '\n\n',
+          summary: summaryFor( data )
+        };
+
+        console.log( 'uri:', uri );
+        console.log( 'params:', params );
+        console.log( summaryFor( data ) );
+
+        $rootScope.$emit( 'geojson', {
+          data: data,
+          endpoint: $scope.endpoints[i],
+          endpoint_i: i
+        });
+
+      };
+
       $http({
           url: target,
           method: 'GET',
           params: params,
           headers: { 'Accept': 'application/json' }
         })
-        .success(function(data, status, headers, config) {
-
-          // console.log( 'res', data, status );
-
-          $scope.responses[$scope.endpoints[i]] = {
-            status: status,
-            body: JSON.stringify( data, null, 2 ) + '\n\n',
-            summary: summaryFor( data )
-          };
-
-          console.log( 'uri:', uri );
-          console.log( 'params:', params );
-          console.log( summaryFor( data ) );
-
-          $rootScope.$emit( 'geojson', {
-            data: data,
-            endpoint: $scope.endpoints[i],
-            endpoint_i: i
-          });
-
-        })
-        .error(function(data, status, headers, config) {
-          console.log( 'jsonp error', endpoint + path );
-          console.log( status, headers, data );
-          $scope.responses[$scope.endpoints[i]] = {
-            error: 'jsonp request failed'
-          };
-        });
+        .success(responseParser)
+        .error(responseParser);
     });
   };
 
