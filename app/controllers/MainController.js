@@ -9,7 +9,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   $scope.keys = {
     'https://search.mapzen.com': 'search-ahqsC9E',
     'http://pelias.mapzen.com': 'pelias-D7WkrQc',
-    'http://pelias.bigdev.mapzen.com': ''
+    'http://pelias.dev.mapzen.com': ''
   };
 
   $scope.endpoints = [];
@@ -103,7 +103,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.submit();
   };
   window.resetEndpoints = function(){
-    window.saveEndpoints(['https://search.mapzen.com','http://pelias.mapzen.com','http://pelias.bigdev.mapzen.com']);
+    window.saveEndpoints(['https://search.mapzen.com','http://pelias.mapzen.com','http://pelias.dev.mapzen.com']);
     window.loadEndpoints();
   };
   window.saveEndpoints = function( endpoints ){
