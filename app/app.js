@@ -6,6 +6,6 @@ app.config( function( $routeProvider ) {
   $routeProvider
     .otherwise({
       controller: 'MainController',
-      templateUrl: '/app/partials/main.html'
+      templateUrl: 'app/partials/main.html'
     });
 });
