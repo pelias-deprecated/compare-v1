@@ -27,6 +27,10 @@ setEndpoints(["https://fastly.search.mapzen.com", "http://pelias.dev.mapzen.com"
 MainController.js:112 saved to localStorage: https://fastly.search.mapzen.com,http://pelias.dev.mapzen.com,http://localhost:3100
 ```
 
+# commit dependencies to github
+
+please commit your `bower_components/*` to github, this ensures that they are available on the github CDN.
+
 # deploy to github.io
 
 simply open a [new PR against gh-pages](https://github.com/pelias/compare/compare/gh-pages...master)
