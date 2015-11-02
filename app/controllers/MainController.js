@@ -8,6 +8,7 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   $scope.keys = {
     'https://search.mapzen.com': 'search-ahqsC9E',
+    'https://fastly.search.mapzen.com': 'search-ahqsC9E',
     'http://pelias.mapzen.com': 'pelias-D7WkrQc',
     'http://pelias.dev.mapzen.com': ''
   };
@@ -103,7 +104,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.submit();
   };
   window.resetEndpoints = function(){
-    window.saveEndpoints(['https://search.mapzen.com','http://pelias.mapzen.com','http://pelias.dev.mapzen.com']);
+    window.saveEndpoints(['https://search.mapzen.com','https://fastly.search.mapzen.com','http://pelias.dev.mapzen.com']);
     window.loadEndpoints();
   };
   window.saveEndpoints = function( endpoints ){
@@ -121,9 +122,9 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
   console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried, or use resetEndpoints() to reset to defaults');
 
-  var currentVersion = 2;
+  var currentVersion = 3;
   var version = window.localStorage.getItem('version');
-  if( isNaN(version) || parseInt( version, 10 ) < currentVersion ){
+  if( !version || parseInt( version, 10 ) < currentVersion ){
     window.resetEndpoints();
     window.localStorage.setItem('version',currentVersion);
   }
