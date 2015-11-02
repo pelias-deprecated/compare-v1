@@ -8,28 +8,36 @@
 
 # advanced usage
 
-you can use ```getEndpoints()``` and ```setEndpoints()``` to change which hosts are being queried, or use ```resetEndpoints()``` to reset to defaults.
+you can use ```getEndpoints()``` and ```setEndpoints()``` in your browser `Console` tab to change which hosts are being queried, or use ```resetEndpoints()``` to reset to defaults.
 
-your endpoint preferences are stored in localStorage, so they will persist between page loads.
+your endpoint preferences are stored in `localStorage`, so they will persist between page loads.
 
 # compare against localhost
 
 you can update the endpoints to point to localhost; in your browser `Console` tab type:
 
 ```javascript
-getEndpoints()
+> getEndpoints()
 
-["https://search.mapzen.com", "https://fastly.search.mapzen.com", "http://pelias.dev.mapzen.com"]
+[
+  "https://search.mapzen.com",
+  "https://fastly.search.mapzen.com",
+  "http://pelias.dev.mapzen.com"
+]
 ```
 ```javascript
-setEndpoints(["https://fastly.search.mapzen.com", "http://pelias.dev.mapzen.com", "http://localhost:3100"])
+> setEndpoints([
+  "https://fastly.search.mapzen.com",
+  "http://pelias.dev.mapzen.com",
+  "http://localhost:3100"
+])
 
-MainController.js:112 saved to localStorage: https://fastly.search.mapzen.com,http://pelias.dev.mapzen.com,http://localhost:3100
+MainController.js:112 saved to localStorage
 ```
 
 # commit dependencies to github
 
-please commit your `bower_components/*` to github, this ensures that they are available on the github CDN.
+please commit your `bower_components/*` to github so they are available on the github CDN.
 
 # deploy to github.io
 
