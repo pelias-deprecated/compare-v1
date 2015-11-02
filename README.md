@@ -12,6 +12,21 @@ you can use ```getEndpoints()``` and ```setEndpoints()``` to change which hosts 
 
 your endpoint preferences are stored in localStorage, so they will persist between page loads.
 
+# compare against localhost
+
+you can update the endpoints to point to localhost; in your browser `Console` tab type:
+
+```javascript
+getEndpoints()
+
+["https://search.mapzen.com", "https://fastly.search.mapzen.com", "http://pelias.dev.mapzen.com"]
+```
+```javascript
+setEndpoints(["https://fastly.search.mapzen.com", "http://pelias.dev.mapzen.com", "http://localhost:3100"])
+
+MainController.js:112 saved to localStorage: https://fastly.search.mapzen.com,http://pelias.dev.mapzen.com,http://localhost:3100
+```
+
 # deploy to github.io
 
 simply open a [new PR against gh-pages](https://github.com/pelias/compare/compare/gh-pages...master)
