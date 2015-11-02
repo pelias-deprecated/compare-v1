@@ -15,3 +15,39 @@ your endpoint preferences are stored in localStorage, so they will persist betwe
 # deploy to github.io
 
 simply open a [new PR against gh-pages](https://github.com/pelias/compare/compare/gh-pages...master)
+
+**note** it can take several minutes before the gh-pages content appears at http://pelias.github.io/compare
+
+#### from the command-line
+
+if you have push access you can deploy directly from the command-line:
+
+```bash
+➜  compare git:(master) git fetch
+
+From github.com:pelias/compare
+ * [new branch]      gh-pages   -> origin/gh-pages
+```
+```bash
+➜  compare git:(master) git checkout gh-pages
+
+Branch gh-pages set up to track remote branch gh-pages from origin.
+Switched to a new branch 'gh-pages'
+```
+```bash
+➜  compare git:(gh-pages) git merge master
+
+Merge made by the 'recursive' strategy.
+ README.md                         | 12 +++++++++++-
+ app/controllers/MainController.js |  7 ++++---
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+ ```
+ ```bash
+➜  compare git:(gh-pages) git push origin gh-pages
+
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 232 bytes | 0 bytes/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To git@github.com:pelias/compare.git
+   64a4d79..0356274  gh-pages -> gh-pages
+```
