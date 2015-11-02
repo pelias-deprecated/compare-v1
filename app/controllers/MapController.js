@@ -3,7 +3,7 @@ function MapController( $scope, $rootScope, leafletData ){
 
   angular.extend($scope, {
     defaults: {
-      scrollWheelZoom: false,
+      // scrollWheelZoom: false,
       zoomControl: true,
       attributionControl: false,
       tileLayer: "//{s}.tiles.mapbox.com/v3/randyme.i0568680/{z}/{x}/{y}.png"
@@ -23,11 +23,11 @@ function MapController( $scope, $rootScope, leafletData ){
         dashArray: '3',
         fillOpacity: 0.7
       };
-      
+
       angular.extend( $scope, {
         geojson: geojson
       });
-      
+
       $scope.centerJSON( geojson.endpoint_i, geojson );
 
     }
@@ -39,14 +39,14 @@ function MapController( $scope, $rootScope, leafletData ){
     // console.log( 'centerJSON', leafletData.getMap.toString(), Object.keys(leafletData) );
     leafletData.getMap( 'map'+i ).then( function(map) {
 
-      map.dragging.disable();
-      map.touchZoom.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
+      // map.dragging.disable();
+      // map.touchZoom.disable();
+      // map.doubleClickZoom.disable();
+      // map.scrollWheelZoom.disable();
 
       var geoJsonLayer = L.geoJson( geojson.data );
       var bounds = geoJsonLayer.getBounds();
-      
+
       // pad bounds to the marker fit on screen
       try {
         bounds = bounds.pad(0.5);
