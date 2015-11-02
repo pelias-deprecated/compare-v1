@@ -3,7 +3,7 @@ function MapController( $scope, $rootScope, leafletData ){
 
   angular.extend($scope, {
     defaults: {
-      // scrollWheelZoom: false,
+      scrollWheelZoom: false,
       zoomControl: true,
       attributionControl: false,
       tileLayer: "//{s}.tiles.mapbox.com/v3/randyme.i0568680/{z}/{x}/{y}.png"
@@ -42,7 +42,7 @@ function MapController( $scope, $rootScope, leafletData ){
       // map.dragging.disable();
       // map.touchZoom.disable();
       // map.doubleClickZoom.disable();
-      // map.scrollWheelZoom.disable();
+      map.scrollWheelZoom.disable();
 
       var geoJsonLayer = L.geoJson( geojson.data );
       var bounds = geoJsonLayer.getBounds();
