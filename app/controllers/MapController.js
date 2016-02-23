@@ -15,11 +15,11 @@ function MapController( $scope, $rootScope, leafletData ){
   var markers = {
     default: L.AwesomeMarkers.icon({
       icon: 'dot-circle-o',
-      markerColor: 'darkpuple'
+      markerColor: 'purple'
     }),
     geonames: L.AwesomeMarkers.icon({
-      icon: 'map-pin',
-      markerColor: 'purple'
+      icon: 'map-signs',
+      markerColor: 'darkpurple'
     }),
     wof: L.AwesomeMarkers.icon({
       icon: 'globe',
@@ -30,11 +30,11 @@ function MapController( $scope, $rootScope, leafletData ){
       markerColor: 'red'
     }),
     openaddresses: L.AwesomeMarkers.icon({
-      icon: 'street-view',
+      icon: 'language',
       markerColor: 'orange'
     }),
     quattroshapes: L.AwesomeMarkers.icon({
-      icon: 'map-signs',
+      icon: 'object-ungroup',
       markerColor: 'darkgreen'
     }),
   };
@@ -101,7 +101,7 @@ function MapController( $scope, $rootScope, leafletData ){
         }
 
         return L.marker(latlon, {
-          title: (f.properties && f.properties.label),
+          title: (f.properties.gid + " - " + f.properties.label),
           icon: i
         });
       };
