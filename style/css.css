@@ -359,3 +359,8 @@ h4 {
   margin-top: 8px;
   margin-bottom: 0;
 }
+
+.awesome-marker i {
+  font-size: 18px;
+  margin-top: 8px;
+}

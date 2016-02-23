@@ -10,25 +10,126 @@ function MapController( $scope, $rootScope, leafletData ){
     }
   });
 
+  // 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'
+
+  var markers = {
+    default: L.AwesomeMarkers.icon({
+      icon: 'dot-circle-o',
+      markerColor: 'darkpuple'
+    }),
+    geonames: L.AwesomeMarkers.icon({
+      icon: 'map-pin',
+      markerColor: 'purple'
+    }),
+    wof: L.AwesomeMarkers.icon({
+      icon: 'globe',
+      markerColor: 'green'
+    }),
+    openstreetmap: L.AwesomeMarkers.icon({
+      icon: 'map-o',
+      markerColor: 'red'
+    }),
+    openaddresses: L.AwesomeMarkers.icon({
+      icon: 'street-view',
+      markerColor: 'orange'
+    }),
+    quattroshapes: L.AwesomeMarkers.icon({
+      icon: 'map-signs',
+      markerColor: 'darkgreen'
+    }),
+  };
+
   $rootScope.$on( 'geojson', function( ev, geojson ){
 
     if( geojson.endpoint == $scope.endpoint ){
       // console.log( 'on', geojson );
 
-      geojson.style = {
-        fillColor: "green",
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
+      // add a red marker to map to indicate the focus centre point.
+      geojson.focus_point = null;
+      if( geojson.data.hasOwnProperty('geocoding') && geojson.data.geocoding.hasOwnProperty('query') ){
+        var query = geojson.data.geocoding.query;
+        if( query.hasOwnProperty('focus.point.lat') && query.hasOwnProperty('focus.point.lon') ){
+          geojson.focus_point = { lon: query['focus.point.lon'], lat: query['focus.point.lat'] };
+        }
+      }
+
+      // geojson.style = {
+      //   fillColor: "green",
+      //   weight: 2,
+      //   opacity: 1,
+      //   color: 'white',
+      //   dashArray: '3',
+      //   fillOpacity: 0.7
+      // };
+
+      // all custom icon logic
+      geojson.pointToLayer = function style(f, latlon, options) {
+
+        var i = markers.default;
+
+        // custom icon created from geojson properties
+        if( f.properties.hasOwnProperty('icon') ){
+          i = L.AwesomeMarkers.icon({
+            icon: f.properties.icon,
+            markerColor: f.properties['marker-color'] || 'red'
+          });
+        }
+
+        else {
+          switch( f.properties.source ){
+            case "openstreetmap":
+            case "osm":
+              i = markers.openstreetmap;
+              break;
+            case "whosonfirst":
+            case "wof":
+              i = markers.wof;
+              break;
+            case "geonames":
+            case "gn":
+              i = markers.geonames;
+              break;
+            case "quattroshapes":
+            case "qs":
+              i = markers.quattroshapes;
+              break;
+            case "openaddresses":
+            case "oa":
+              i = markers.openaddresses;
+              break;
+          }
+        }
+
+        return L.marker(latlon, {
+          title: (f.properties && f.properties.label),
+          icon: i
+        });
       };
 
-      angular.extend( $scope, {
-        geojson: geojson
-      });
+      geojson.style = function(f) { return f.properties; };
 
-      $scope.centerJSON( geojson.endpoint_i, geojson );
+      if( geojson.data.hasOwnProperty('features') ){
+
+        if( geojson.focus_point ){
+          geojson.data.features.push({
+            "type": "Feature",
+            "properties": {
+              "marker-color": "blue",
+              "icon": "crosshairs"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [ geojson.focus_point.lon, geojson.focus_point.lat ]
+            }
+          });
+        }
+
+        angular.extend( $scope, {
+          geojson: geojson
+        });
+
+        $scope.centerJSON( geojson.endpoint_i, geojson );
+      }
 
     }
 
@@ -44,6 +145,7 @@ function MapController( $scope, $rootScope, leafletData ){
       // map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
 
+      // calculate result bounds
       var geoJsonLayer = L.geoJson( geojson.data );
       var bounds = geoJsonLayer.getBounds();
 

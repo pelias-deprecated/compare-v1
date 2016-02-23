@@ -9,13 +9,14 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.0.3",
-    "bootstrap": "~3.0.0-rc1",
-    "angular": "1.0.8",
-    "font-awesome": "~4.x",
     "ace-builds": "~1.1.1",
-    "angular-ui-ace": "~0.0.4",
+    "angular": "1.0.8",
     "angular-leaflet": "0.8.4",
+    "angular-ui-ace": "~0.0.4",
+    "bootstrap": "~3.0.0-rc1",
+    "drmonty-leaflet-awesome-markers": "~2.0.2",
+    "font-awesome": "~4.5.0",
+    "jquery": "~2.0.3",
     "uri.js": "~1.15.1"
   },
   "resolutions": {

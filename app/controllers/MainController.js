@@ -57,7 +57,7 @@ function MainController( $scope, $location, $http, $rootScope ){
             geocoding: {
               errors: [ status + ' ' + message ]
             }
-          }
+          };
         }
 
         $scope.responses[$scope.endpoints[i]] = {

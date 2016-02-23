@@ -9,3 +9,6 @@ app.config( function( $routeProvider ) {
       templateUrl: 'app/partials/main.html'
     });
 });
+
+// set the AwesomeMarkers prefix to use fontawesome
+L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
