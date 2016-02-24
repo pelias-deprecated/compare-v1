@@ -103,7 +103,7 @@ function MapController( $scope, $rootScope, leafletData ){
         return L.marker(latlon, {
           title: (f.properties.gid + " - " + f.properties.label),
           icon: i
-        });
+        }).bindPopup('<p><strong style="font-size:14px">' + f.properties.label + '</strong><br />' + f.properties.gid + '</p>');
       };
 
       geojson.style = function(f) { return f.properties; };
