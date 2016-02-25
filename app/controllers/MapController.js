@@ -116,7 +116,7 @@ function MapController( $scope, $rootScope, leafletData ){
             "properties": {
               "marker-color": "blue",
               "icon": "crosshairs",
-              "gid": "lat: " + geojson.focus_point.lat + ", lon:" + geojson.focus_point.lon,
+              "gid": "lat: " + geojson.focus_point.lat + ", lon: " + geojson.focus_point.lon,
               "label": "focus.point"
             },
             "geometry": {
