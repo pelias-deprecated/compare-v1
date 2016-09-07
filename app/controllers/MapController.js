@@ -133,9 +133,35 @@ function MapController( $scope, $rootScope, leafletData ){
         $scope.centerJSON( geojson.endpoint_i, geojson );
       }
 
+      $scope.addBoundingBoxes( geojson.endpoint_i, geojson );
+
     }
 
   });
+
+  $scope.addBoundingBoxes = function( i, geojson ) {
+
+    var style = {
+      stroke: true,
+      color: 'blue',
+      opacity: 0.5,
+      fillOpacity: 0.1,
+      weight: 1
+    };
+
+    leafletData.getMap( 'map'+i ).then( function(map){
+      var bboxLayer = L.geoJson();
+      geojson.data.features.forEach( function( feat ){
+        if( feat.hasOwnProperty('bbox') ){
+          var bounds = [[feat.bbox[1], feat.bbox[0]], [feat.bbox[3], feat.bbox[2]]];
+          var rect = L.rectangle(bounds, style);
+          rect.addTo(bboxLayer);
+        }
+      });
+      bboxLayer.addTo(map);
+    })
+
+  };
 
   $scope.centerJSON = function( i, geojson ) {
 
