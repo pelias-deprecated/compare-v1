@@ -144,8 +144,10 @@ function MapController( $scope, $rootScope, leafletData ){
     var style = {
       stroke: true,
       color: 'blue',
-      opacity: 0.5,
-      fillOpacity: 0.1,
+      opacity: 0.2,
+      dashArray: '5, 5',
+      fillColor: 'blue',
+      fillOpacity: 0.0,
       weight: 1
     };
 
@@ -159,7 +161,7 @@ function MapController( $scope, $rootScope, leafletData ){
         }
       });
       bboxLayer.addTo(map);
-    })
+    });
 
   };
 
