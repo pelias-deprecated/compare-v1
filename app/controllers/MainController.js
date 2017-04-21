@@ -158,7 +158,8 @@ function summaryFor( data ){
   if( data && Array.isArray( data.features ) ){
     var maxWidth = String(data.features.length).length;
     data.features.forEach( function( feat, i ){
-      summary += leftPad( i+1, maxWidth, ' ' ) + ')\t' + feat.properties.label + '\n';
+      var perc = Math.floor( feat.properties.confidence * 100 );
+      summary += leftPad( i+1, maxWidth, ' ' ) + '.\t' + perc + '%. ' + feat.properties.label + '\n';
     });
   }
 
