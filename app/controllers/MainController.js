@@ -7,11 +7,11 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
 
   $scope.keys = {
-    'https://search.mapzen.com': 'search-ahqsC9E',
-    'https://fastly.search.mapzen.com': 'search-ahqsC9E',
-    'http://pelias.mapzen.com': 'search-ahqsC9E',
-    'http://pelias.dev.mapzen.com': 'search-ahqsC9E',
-    'http://pelias2.dev.mapzen.com': 'search-ahqsC9E'
+    'https://search.mapzen.com': 'mapzen-hDy3Ygk',
+    'http://pelias.mapzen.com': 'mapzen-hDy3Ygk',
+    'http://pelias.dev.mapzen.com': 'mapzen-iPi9LiS',
+    'http://pelias.prodbuild.mapzen.com': '',
+    'http://pelias2.dev.mapzen.com': ''
   };
 
   $scope.endpoints = [];
