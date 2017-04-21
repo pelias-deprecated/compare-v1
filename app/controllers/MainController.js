@@ -9,8 +9,9 @@ function MainController( $scope, $location, $http, $rootScope ){
   $scope.keys = {
     'https://search.mapzen.com': 'search-ahqsC9E',
     'https://fastly.search.mapzen.com': 'search-ahqsC9E',
-    'http://pelias.mapzen.com': 'pelias-D7WkrQc',
-    'http://pelias.dev.mapzen.com': ''
+    'http://pelias.mapzen.com': 'search-ahqsC9E',
+    'http://pelias.dev.mapzen.com': 'search-ahqsC9E',
+    'http://pelias2.dev.mapzen.com': 'search-ahqsC9E'
   };
 
   $scope.endpoints = [];
