@@ -11,7 +11,9 @@ function MainController( $scope, $location, $http, $rootScope ){
     'http://pelias.mapzen.com': 'mapzen-hDy3Ygk',
     'http://pelias.dev.mapzen.com': 'mapzen-iPi9LiS',
     'http://pelias.prodbuild.mapzen.com': '',
-    'http://pelias2.dev.mapzen.com': ''
+    'http://pelias2.dev.mapzen.com': '',
+    'https://api.geocode.earth': 'ge-6361345754ea1287',
+    'https://api.dev.geocode.earth': 'ge-6361345754ea1287'
   };
 
   $scope.endpoints = [];
@@ -105,7 +107,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.submit();
   };
   window.resetEndpoints = function(){
-    window.saveEndpoints(['https://search.mapzen.com','http://pelias.prodbuild.mapzen.com','http://pelias.dev.mapzen.com']);
+    window.saveEndpoints(['https://search.mapzen.com/', 'https://api.geocode.earth', 'https://api.dev.geocode.earth']);
     window.loadEndpoints();
   };
   window.saveEndpoints = function( endpoints ){
@@ -123,7 +125,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
   console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried, or use resetEndpoints() to reset to defaults');
 
-  var currentVersion = 4;
+  var currentVersion = 5;
   var version = window.localStorage.getItem('version');
   if( !version || parseInt( version, 10 ) < currentVersion ){
     window.resetEndpoints();
