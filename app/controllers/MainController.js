@@ -84,7 +84,7 @@ function MainController( $scope, $location, $http, $rootScope ){
           url: target,
           method: 'GET',
           params: params,
-          headers: { 'Accept': 'application/json' }
+          headers: { 'Accept': 'application/json', 'X-Requested-With': '' }
         })
         .success(responseParser)
         .error(responseParser);
