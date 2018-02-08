@@ -125,7 +125,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
   console.info( 'funfact: you can use getEndpoints() and setEndpoints() to change which hosts are being queried, or use resetEndpoints() to reset to defaults');
 
-  var currentVersion = 4;
+  var currentVersion = 5;
   var version = window.localStorage.getItem('version');
   if( !version || parseInt( version, 10 ) < currentVersion ){
     window.resetEndpoints();
