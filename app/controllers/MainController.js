@@ -7,11 +7,6 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
 
   $scope.keys = {
-    'https://search.mapzen.com': 'mapzen-hDy3Ygk',
-    'http://pelias.mapzen.com': 'mapzen-hDy3Ygk',
-    'http://pelias.dev.mapzen.com': 'mapzen-iPi9LiS',
-    'http://pelias.prodbuild.mapzen.com': '',
-    'http://pelias2.dev.mapzen.com': '',
     'https://api.geocode.earth': 'ge-6361345754ea1287',
     'https://api.dev.geocode.earth': 'ge-6361345754ea1287'
   };
@@ -107,7 +102,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.submit();
   };
   window.resetEndpoints = function(){
-    window.saveEndpoints(['https://search.mapzen.com/', 'https://api.geocode.earth', 'https://api.dev.geocode.earth']);
+    window.saveEndpoints(['https://api.geocode.earth', 'https://api.dev.geocode.earth']);
     window.loadEndpoints();
   };
   window.saveEndpoints = function( endpoints ){

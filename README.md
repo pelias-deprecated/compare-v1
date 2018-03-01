@@ -20,15 +20,14 @@ you can update the endpoints to point to localhost; in your browser `Console` ta
 > getEndpoints()
 
 [
-  "https://search.mapzen.com",
-  "https://fastly.search.mapzen.com",
-  "http://pelias.dev.mapzen.com"
+  "https://api.geocode.earth",
+  "http://another-pelias.com"
 ]
 ```
 ```javascript
 > setEndpoints([
-  "https://fastly.search.mapzen.com",
-  "http://pelias.dev.mapzen.com",
+  "https://api.geocode.earth",
+  "http://another-pelias.com",
   "http://localhost:3100"
 ])
 
