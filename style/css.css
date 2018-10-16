@@ -98,6 +98,9 @@ h4 {
   margin: 0;
   padding: 0;
   list-style: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .summary ul {
@@ -111,24 +114,26 @@ h4 {
 }
 
 .summary span.num {
-  color: rgba(0,0,139,0.5);
+  color: rgba(0,0,139,0.6);
   white-space: pre;
 }
 
 .summary span.icon {
-  color: rgba(0,0,139,0.5);
+  color: rgba(0,0,139,0.4);
   white-space: pre;
   display: inline-block;
   width: 18px;
+  font-size: 11px;
+  vertical-align: bottom;
   margin: 0;
-  margin-left: 4px;
-  margin-right: 0px;
+  margin-left: 1px;
+  margin-right: 0;
   text-align: center;
 }
 
 .hidden_brace{
-  width:0;
-  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
 }
 
 .ace_scrollbar {
