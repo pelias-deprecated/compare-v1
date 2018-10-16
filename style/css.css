@@ -116,13 +116,13 @@ h4 {
 }
 
 .summary span.icon {
-  color: rgba(0,0,120,0.7);
+  color: #767676;
   white-space: pre;
   display: inline-block;
   width: 18px;
   margin: 0;
   margin-left: 4px;
-  margin-right: 4px;
+  margin-right: 5px;
   text-align: center;
 }
 
