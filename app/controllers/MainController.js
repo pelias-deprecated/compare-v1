@@ -150,19 +150,45 @@ function leftPad( text, width, pad ){
   return t;
 }
 
-function summaryFor( data ){
-  var summary = '';
+function iconForLayer( layer ){
+  switch( layer ){
+    case 'locality': return 'fa fa-university';
+    case 'localadmin': return 'fa fa-gavel';
+    case 'neighbourhood': return 'fa fa-draw-polygon';
+    case 'borough': return 'fa fa-map-pin';
+    case 'county': return 'fab fa-cuttlefish';
+    case 'macrocounty': return 'fa fa-globe';
+    case 'region': return 'fa fa-vector-square';
+    case 'macroregion': return 'fa fa-object-ungroup';
+    case 'country': return 'fa fa-flag-checkered';
+    case 'venue': return 'fas fa-map-marker';
+    case 'address': return 'fa fa-envelope';
+    case 'mixed': return 'fa fa-crosshairs';
+    case 'street': return 'fa fa-road';
+    default: return 'fa fa-question';
+  }
+}
 
-  if( data && Array.isArray( data.features ) ){
+function summaryFor( data ){
+  var summary = [];
+
+  if( data && Array.isArray( data.features ) && data.features.length ){
     var maxWidth = String(data.features.length).length;
     data.features.forEach( function( feat, i ){
-      summary += leftPad( i+1, maxWidth, ' ' ) + ')\t' + feat.properties.label + '\n';
+      var icon = iconForLayer(feat.properties.layer);
+      summary.push(
+        '<span class="num">' + leftPad( i+1, maxWidth, ' ' ) + ')</span>' +
+        '<span class="icon"><i class="' + icon + '" title="' + feat.properties.layer + '"></i>' + '</span>' +
+        feat.properties.label
+      );
     });
   }
 
-  if( !summary ){
-    summary = '\n';
+  else {
+    return '<p class="error">no features</p>';
   }
 
-  return summary;
+  return '<ul>' + summary.map(function(s){
+    return '<li>' + s + '</li>';
+  }).join('') + '</ul>';
 }

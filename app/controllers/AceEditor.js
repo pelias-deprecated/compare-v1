@@ -12,6 +12,7 @@ function AceEditor( $scope, $http ) {
     // Options
     ace.setReadOnly(true);
     ace.$blockScrolling = Infinity;
+    _session.setUseWrapMode(false);
     _renderer.setShowGutter(false);
     _renderer.setShowPrintMargin(false);
     // ace.setReadOnly(true);
@@ -41,11 +42,12 @@ function AceEditor( $scope, $http ) {
 function updateEditorHeight( ace ) {
 
   var codeEl = $( ace.container ).parent();
-  if( !ace.getSession ) return null;
+  if( !ace.getSession ){ return null };
 
   // http://stackoverflow.com/questions/11584061/
+  var screenLength = ace.getSession().getScreenLength();
   var newHeight =
-            ace.getSession().getScreenLength()
+            ( screenLength + 0.5 )
             * ace.renderer.lineHeight
             + ace.renderer.scrollBar.getWidth();
 

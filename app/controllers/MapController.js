@@ -14,27 +14,28 @@ function MapController( $scope, $rootScope, leafletData ){
 
   var markers = {
     default: L.AwesomeMarkers.icon({
-      icon: 'dot-circle-o',
+      icon: 'fa-dot-circle',
       markerColor: 'purple'
     }),
     geonames: L.AwesomeMarkers.icon({
-      icon: 'map-signs',
+      icon: 'fa-map-signs',
       markerColor: 'darkpurple'
     }),
     wof: L.AwesomeMarkers.icon({
-      icon: 'globe',
+      icon: 'x fa-weebly',
+      prefix: 'fab',
       markerColor: 'green'
     }),
     openstreetmap: L.AwesomeMarkers.icon({
-      icon: 'map-o',
+      icon: 'fa-map',
       markerColor: 'red'
     }),
     openaddresses: L.AwesomeMarkers.icon({
-      icon: 'language',
+      icon: 'fa-language',
       markerColor: 'orange'
     }),
     quattroshapes: L.AwesomeMarkers.icon({
-      icon: 'object-ungroup',
+      icon: 'fa-object-ungroup',
       markerColor: 'darkgreen'
     }),
   };

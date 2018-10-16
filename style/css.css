@@ -60,7 +60,8 @@ h4 {
 
 .ace_editor {
   height: 20000px;
-  font-size: 12px;
+  font-size: 14px;
+  font-family: monospace;
   overflow: hidden;
 }
 
@@ -82,8 +83,47 @@ h4 {
   /*font-size: 14px;*/
 }
 
-.response .ace_editor {
+.summary {
+  background-color: white;
+  font-family: monospace;
   font-size: 14px;
+  line-height: 1.2em;
+  overflow-x: hidden;
+  padding: 5px 10px;
+  min-height: 2em;
+}
+
+.summary ul,
+.summary ul li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.summary ul {
+  margin-left: -5px;
+}
+
+.summary p.error {
+  color: rgba(139,0,0,0.8);
+  padding: 0;
+  margin: 0;
+}
+
+.summary span.num {
+  color: rgba(0,0,139,0.5);
+  white-space: pre;
+}
+
+.summary span.icon {
+  color: #444;
+  color: rgba(0,0,139,0.7);
+  white-space: pre;
+  display: inline-block;
+  width: 18px;
+  margin: 0;
+  margin-left: 5px;
+  margin-right: 2px;
 }
 
 .ace_scrollbar {
@@ -95,6 +135,7 @@ h4 {
 }
 
 .ace_content {
+  /*margin-left: -0.5em !important;*/
   padding-top: 5px;
   clear:both;
 }

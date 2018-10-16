@@ -1,5 +1,5 @@
 
-var app = angular.module( 'compare', [ 'ui.ace', 'leaflet-directive' ] );
+var app = angular.module( 'compare', [ 'ngSanitize', 'ui.ace', 'leaflet-directive' ] );
 
 // Routes
 app.config( function( $routeProvider ) {
