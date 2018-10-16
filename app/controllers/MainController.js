@@ -177,8 +177,8 @@ function summaryFor( data ){
     data.features.forEach( function( feat, i ){
       var icon = iconForLayer(feat.properties.layer);
       summary.push(
-        '<span class="num">' + leftPad( i+1, maxWidth, ' ' ) + '<span class="hidden_brace">)</span></span>' +
-        '<span class="icon"><i class="' + icon + '" title="' + feat.properties.layer + '"></i>' + '</span> ' +
+        '<span class="num">' + leftPad( i+1, maxWidth, ' ' ) + '<span class="hidden_brace">) </span></span>' +
+        '<span class="icon"><i class="' + icon + '" title="' + feat.properties.layer + '"></i>' + '</span>' +
         feat.properties.label
       );
     });
