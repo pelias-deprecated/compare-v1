@@ -116,14 +116,19 @@ h4 {
 }
 
 .summary span.icon {
-  color: #767676;
+  color: rgba(0,0,139,0.5);
   white-space: pre;
   display: inline-block;
   width: 18px;
   margin: 0;
   margin-left: 4px;
-  margin-right: 5px;
+  margin-right: 0px;
   text-align: center;
+}
+
+.hidden_brace{
+  width:0;
+  overflow: hidden;
 }
 
 .ace_scrollbar {
