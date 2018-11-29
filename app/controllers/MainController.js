@@ -7,8 +7,8 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
 
   $scope.keys = {
-    'https://api.geocode.earth': 'ge-6361345754ea1287',
-    'https://api.dev.geocode.earth': 'ge-6361345754ea1287'
+    'https://api.geocode.earth': 'ge-122a0ecc59dbb284',
+    'https://api.dev.geocode.earth': 'ge-122a0ecc59dbb284'
   };
 
   $scope.endpoints = [];
