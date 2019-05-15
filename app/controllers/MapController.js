@@ -154,7 +154,7 @@ function MapController( $scope, $rootScope, leafletData ){
 
     leafletData.getMap( 'map'+i ).then( function(map){
       var bboxLayer = L.geoJson();
-      geojson.data.features.forEach( function( feat ){
+      (geojson.data.features || []).forEach( function( feat ){
         if( feat.hasOwnProperty('bbox') ){
           var bounds = [[feat.bbox[1], feat.bbox[0]], [feat.bbox[3], feat.bbox[2]]];
           var rect = L.rectangle(bounds, style);

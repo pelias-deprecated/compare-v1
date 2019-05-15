@@ -6,9 +6,30 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.request( $scope.path );
   };
 
+  // get your own api key for free at https://geocode.earth/
+  // to use your own key, open the browsr console and enter
+  // the key in your browser localstorage and refresh the page:
+  // > localStorage.setItem('api_key:geocode.earth', 'ge-aaaaaaaaaaaaaaaa');
+  var getKey = function(domain){
+    var sections = domain.split('.');
+    for(var i=0; i<sections.length-1; i++){
+      var host = sections.slice(i).join('.')
+      var key = window.localStorage.getItem('api_key:' + host);
+      if ('string' === typeof key && key.length) {
+        console.info('loaded key for domain \'' + domain + '\' from localStorage: \'api_key:' + host + '\'');
+        return key;
+      }
+    }
+
+    // if no personal key is found, then
+    // use the geocode.earth 'compare app' key
+    // which has restrictive daily limits.
+    return 'ge-122a0ecc59dbb284'
+  };
+
   $scope.keys = {
-    'https://api.geocode.earth': 'ge-122a0ecc59dbb284',
-    'https://api.dev.geocode.earth': 'ge-122a0ecc59dbb284'
+    'https://api.geocode.earth': getKey('api.geocode.earth'),
+    'https://api.dev.geocode.earth': getKey('api.dev.geocode.earth')
   };
 
   $scope.endpoints = [];
@@ -36,15 +57,15 @@ function MainController( $scope, $location, $http, $rootScope ){
         }
       }
 
-      console.log( 'target:', target );
-      console.log( 'params:', params );
+      // console.log( 'target:', target );
+      // console.log( 'params:', params );
 
       var responseParser = function(data, status, headers, config) {
 
         // error
         if( !data || !data.geocoding ){
           console.log( 'jsonp error', endpoint + path );
-          console.log( status, headers, data );
+          console.log( status, data );
 
           // mock response to reuse the UI logic
 
@@ -65,9 +86,9 @@ function MainController( $scope, $location, $http, $rootScope ){
           summary: summaryFor( data )
         };
 
-        console.log( 'uri:', uri );
-        console.log( 'params:', params );
-        console.log( summaryFor( data ) );
+        // console.log( 'uri:', uri );
+        // console.log( 'params:', params );
+        // console.log( summaryFor( data ) );
 
         $rootScope.$emit( 'geojson', {
           data: data,
@@ -111,7 +132,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   };
   window.loadEndpoints = function(){
     var endpoints = window.localStorage.getItem( "endpoints" );
-    console.info( 'loaded from localStorage:', endpoints );
+    console.info( 'loaded from localStorage:', endpoints.split(',').join(', ') );
     if( 'string' === typeof endpoints ){
       $scope.endpoints = endpoints.split(',');
     } else {
@@ -128,7 +149,7 @@ function MainController( $scope, $location, $http, $rootScope ){
   }
 
   window.loadEndpoints();
-  console.info( 'using endpoints:', $scope.endpoints );
+  // console.info( 'using endpoints:', $scope.endpoints );
   // end of endpoints //
 
   var path = $location.path();
