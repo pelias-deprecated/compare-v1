@@ -38,12 +38,6 @@ function MainController( $scope, $location, $http, $rootScope ){
 
   $scope.request = function( path ){
 
-    // hack!? manually encode text to ensure that
-    // ampersands and other reserved chars encode correctly
-    var safePath = path.replace( /text=(.*)/i, function(i){
-      return i.substr(0,6) + encodeURIComponent( i.substr(6) );
-    });
-
     $scope.responses = {};
     $scope.endpoints.forEach( function( endpoint, i ){
 
