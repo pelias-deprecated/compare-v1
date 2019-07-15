@@ -11,13 +11,6 @@
 Enter any Pelias query string into the box on the top, and it will query
 multiple Pelias instances with that query, displaying results side by side for easy comparison.
 
-## Warning: `text` parameter must be last
-
-The `text` parameter of any Pelias query must always come last in the query.
-This has the advantage that all contents of the `text` parameter can be
-interpeted directly, without escaping URL characters. However, it does mean
-that any parameters place after `text` will be interpreted as part of the `text`.
-
 # advanced usage
 
 you can use ```getEndpoints()``` and ```setEndpoints()``` in your browser `Console` tab to change which hosts are being queried, or use ```resetEndpoints()``` to reset to defaults.
