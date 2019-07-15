@@ -41,7 +41,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $scope.responses = {};
     $scope.endpoints.forEach( function( endpoint, i ){
 
-      var uri = URI(endpoint + safePath);
+      var uri = URI(endpoint + path);
       var target = uri.scheme() + '://' + uri.host() + uri.path();
       var params = uri.search(true);
 
