@@ -45,7 +45,7 @@ please commit your `bower_components/*` to github so they are available on the g
 
 # deploy to github.io
 
-simply open a [new PR against gh-pages](https://github.com/pelias/compare/compare/gh-pages...master)
+Github Pages is activated on the master branch, so open PRs as normal.
 
 **note** it can take several minutes before the gh-pages content appears at http://pelias.github.io/compare
 
