@@ -28,11 +28,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     return 'ge-5673e2c135b93a30'
   };
 
-  $scope.keys = {
-    'https://api.geocode.earth': getKey('api.geocode.earth'),
-    'https://api.dev.geocode.earth': getKey('api.dev.geocode.earth')
-  };
-
+  $scope.keys = {};
   $scope.endpoints = [];
   $scope.responses = {};
 
@@ -45,8 +41,12 @@ function MainController( $scope, $location, $http, $rootScope ){
       var target = uri.scheme() + '://' + uri.host() + uri.path();
       var params = uri.search(true);
 
+      if (!$scope.endpoints.hasOwnProperty(uri.host())){
+        $scope.keys[uri.host()] = getKey(uri.host());
+      }
+
       if( !params.hasOwnProperty( 'api_key' ) ){
-        var key = $scope.keys[ uri.scheme() + '://' + uri.host() ];
+        var key = $scope.keys[ uri.host() ];
         if( key ){
           params.api_key = key;
         }
