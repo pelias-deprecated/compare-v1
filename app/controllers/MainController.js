@@ -152,7 +152,7 @@ function MainController( $scope, $location, $http, $rootScope ){
     $location.path( '/v1/search?text=london, uk' );
   }
 
-  $scope.path = decodeURIComponent($location.url());
+  $scope.path = decodeURIComponent($location.path());
   document.getElementById("searchbox").focus();
   $scope.submit();
 
