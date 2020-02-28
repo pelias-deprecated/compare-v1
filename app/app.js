@@ -7,6 +7,7 @@ app.config( function( $routeProvider ) {
     .when("/form", {
       controller: 'FormController',
       templateUrl : "app/partials/form.html",
+      reloadOnSearch: false,
     })
     .otherwise({
       controller: 'MainController',

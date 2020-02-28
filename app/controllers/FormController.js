@@ -7,15 +7,17 @@ function FormController($scope, $http, $location, $rootScope) {
   $scope.endpoints = window.endpoints;
   $scope.responses = {};
 
-  $scope.path = '';
-  console.log( $location.search()['text']);
-  $scope.autocomplete = $location.search().autocomplete;
+  $scope.path = "";
+  console.log($location.search()["text"]);
+  console.log($location.search().autocomplete);
+  $scope.autocomplete = $location.search().autocomplete === "1";
+  console.log($scope.autocomplete);
   $scope.text = $location.search().text;
-  $scope.focus = $location.search()['focus.point.lat']
-    ? $location.search()['focus.point.lat'] + ',' + $location.search()['focus.point.lon']
-    : '';
+  $scope.focus = $location.search()["focus.point.lat"]
+    ? $location.search()["focus.point.lat"] + "," + $location.search()["focus.point.lon"]
+    : "";
 
-  $('#endpoints').tagEditor({ 
+  $("#endpoints").tagEditor({
     initialTags: $scope.endpoints,
     maxLength: 1000,
     onChange: function(field, editor, tags) {
@@ -25,7 +27,6 @@ function FormController($scope, $http, $location, $rootScope) {
     }
   });
 
-  
   getParams = () => {
     const params = new URLSearchParams();
 
@@ -42,7 +43,7 @@ function FormController($scope, $http, $location, $rootScope) {
       params.set("text", $scope.text);
     }
     return params;
-  }
+  };
 
   $scope.change = () => {
     let endpoint = "/v1/search";
@@ -55,30 +56,41 @@ function FormController($scope, $http, $location, $rootScope) {
     $scope.path = endpoint + "?" + params.toString();
 
     if ($scope.autocomplete) {
-      $location.search('autocomplete', 1)
+      $location.search("autocomplete", 1);
       $scope.submit();
     } else {
-      $location.search('autocomplete', null);
+      $location.search("autocomplete", null);
     }
   };
 
   $scope.submit = function() {
     const params = getParams();
-    for(var key of params.keys()) { 
-      const value = params.get(key)
+    for (var key of params.keys()) {
+      const value = params.get(key);
       if (value) {
-        // $location.search(key, value);
+        $location.search(key, value);
       }
     }
 
     const callback = responses => {
-      console.log("responses", responses);
       $scope.responses = responses;
     };
     console.log($scope.endpoints);
     doQuery({ $http, $rootScope, path: $scope.path, endpoints: $scope.endpoints, callback });
+    console.log(document.getElementById("text"));
     document.getElementById("text").focus();
   };
+
+  $scope.openFocusModal = () => {
+    console.log("open focus modal");
+    $("#focusModal").modal("show");
+  };
+  
+  $rootScope.$on( 'focus-center-click', function( ev, {latlng} ){
+    console.log(latlng);
+    $scope.focus = latlng.lat + ',' + latlng.lng;
+    change();
+  })
 
   // Ugh, html5 geoloc only works on https
   // const updatePosition = (position) => {
