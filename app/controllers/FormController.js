@@ -1,17 +1,19 @@
 // TODO
-// save query params in URL
-// parse query params from URL
-// build a map pick mode for focus
+// fix url path changing
+// ability to edit query
+// extra query params
 
 function FormController($scope, $http, $location, $rootScope) {
   $scope.endpoints = window.endpoints;
   $scope.responses = {};
+  // window.endpoints.forEach((endpoint) => {
+  //   $scope.responses[endpoint] = {
+  //     summary: 'No response (yet)'
+  //   };
+  // })
 
   $scope.path = "";
-  console.log($location.search()["text"]);
-  console.log($location.search().autocomplete);
-  $scope.autocomplete = $location.search().autocomplete === "1";
-  console.log($scope.autocomplete);
+  $scope.autocomplete = $location.path === '/v1/autocomplete';
   $scope.text = $location.search().text;
   $scope.focus = $location.search()["focus.point.lat"]
     ? $location.search()["focus.point.lat"] + "," + $location.search()["focus.point.lon"]
@@ -51,15 +53,14 @@ function FormController($scope, $http, $location, $rootScope) {
       endpoint = "/v1/autocomplete";
     }
 
+    $location.path(endpoint).replace();
+
     const params = getParams();
 
     $scope.path = endpoint + "?" + params.toString();
 
     if ($scope.autocomplete) {
-      $location.search("autocomplete", 1);
       $scope.submit();
-    } else {
-      $location.search("autocomplete", null);
     }
   };
 
@@ -75,22 +76,23 @@ function FormController($scope, $http, $location, $rootScope) {
     const callback = responses => {
       $scope.responses = responses;
     };
-    console.log($scope.endpoints);
     doQuery({ $http, $rootScope, path: $scope.path, endpoints: $scope.endpoints, callback });
-    console.log(document.getElementById("text"));
     document.getElementById("text").focus();
   };
 
   $scope.openFocusModal = () => {
-    console.log("open focus modal");
     $("#focusModal").modal("show");
   };
   
   $rootScope.$on( 'focus-center-click', function( ev, {latlng} ){
-    console.log(latlng);
     $scope.focus = latlng.lat + ',' + latlng.lng;
     change();
   })
+
+  $scope.change();
+  if ($scope.text) {
+    $scope.submit();
+  }
 
   // Ugh, html5 geoloc only works on https
   // const updatePosition = (position) => {

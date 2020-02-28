@@ -4,6 +4,8 @@
   }
   label {
     padding-right: 20px;
+    width: 200px;
+    flex-shrink: 0;
   }
   .tag-editor {
     flex-grow: 1;
@@ -11,6 +13,19 @@
 </style>
 <div id="outer">
   <form ng-submit="submit()" id="myform">
+    <div class="form-group">
+      <label for="text">Query (text)</label>
+
+      <input
+        id="text"
+        type="text"
+        ng-change="change()"
+        ng-model="text"
+        class="form-control big-form"
+        placeholder="London, UK"
+      />
+    </div>
+
     <div class="form-group">
       <label for="focus">Focus</label>
       <input
@@ -25,19 +40,6 @@
       <button type="button" ng-click="openFocusModal()">
         <i class="fas fa-map"></i>
       </button>
-    </div>
-
-    <div class="form-group">
-      <label for="text">Query</label>
-
-      <input
-        id="text"
-        type="text"
-        ng-change="change()"
-        ng-model="text"
-        class="form-control big-form"
-        placeholder="London, UK"
-      />
     </div>
 
     <div class="form-group">

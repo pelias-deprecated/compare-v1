@@ -18,10 +18,7 @@ function FocusMapController($scope, $rootScope, leafletData) {
     map = _map;
     var layerGroup = L.layerGroup().addTo(map);
 
-    console.log("map: ", map);
-
     function onMapClick(e) {
-      console.log(e.latlng);
       $rootScope.$emit("focus-center-click", {
         latlng: e.latlng
       });
@@ -34,9 +31,7 @@ function FocusMapController($scope, $rootScope, leafletData) {
   });
 
   $("#focusModal").on("shown.bs.modal", function() {
-    console.log("shown!");
     setTimeout(function() {
-      console.log("map!");
       map.invalidateSize();
     }, 1);
   });

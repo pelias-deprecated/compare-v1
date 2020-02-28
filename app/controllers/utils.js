@@ -97,17 +97,17 @@ function summaryFor(data) {
   );
 }
 
-function doQuery({$http, $rootScope, path, callback, endpoints}) {
-  console.log(endpoints);
+function doQuery({ $http, $rootScope, path, callback, endpoints }) {
+  const responses = {};
+
   endpoints.forEach(function(endpoint, i) {
-    if (endpoint.endsWith('/')) {
+    if (endpoint.endsWith("/")) {
       endpoint = endpoint.substring(0, endpoint.length - 1);
     }
     var uri = URI(endpoint + path);
     var target = uri.scheme() + "://" + uri.host() + uri.path();
     var params = uri.search(true);
     const keys = {};
-    const responses = {};
 
     if (!endpoints.includes(uri.host())) {
       keys[uri.host()] = getKey(uri.host());
@@ -143,13 +143,29 @@ function doQuery({$http, $rootScope, path, callback, endpoints}) {
         };
       }
 
+      function replacer(key, value) {
+        // Filtering out properties
+        if (typeof value === "string" && value.startsWith("whosonfirst:")) {
+          const parts = value.split(":");
+          const id = parts[parts.length - 1];
+          return $(`<a href="https://spelunker.whosonfirst.org/id/${id}/">"${value}"</a>`);
+        }
+        return value;
+      }
+
+      renderjson.set_replacer(replacer);
+      renderjson.set_show_to_level("all");
+
       responses[endpoints[i]] = {
         status: status,
         body: data,
         bodyString: JSON.stringify(data, null, 2) + "\n\n",
+        renderedJson: renderjson(data),
         summary: summaryFor(data)
       };
 
+      console.log(responses);
+      console.log(Object.keys(responses).length, endpoints.length);
       if (Object.keys(responses).length == endpoints.length) {
         callback(responses);
       }

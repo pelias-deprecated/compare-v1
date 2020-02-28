@@ -1,3 +1,16 @@
+<style>
+  .renderjson a { text-decoration: none; }
+  .renderjson .disclosure { color: crimson;
+                            font-size: 150%; }
+  .renderjson .syntax { color: grey; }
+  .renderjson .string { color: darkred; }
+  .renderjson .number { color: darkcyan; }
+  .renderjson .boolean { color: blueviolet; }
+  .renderjson .key    { color: darkblue; }
+  .renderjson .keyword { color: blue; }
+  .renderjson .object.syntax { color: lightseagreen; }
+  .renderjson .array.syntax  { color: orange; }
+</style>
 
     <div class="col-sm-{{12/endpoints.length}} content-column" style="padding-right:10px;">
 
@@ -32,7 +45,8 @@
 
         <div class="assertion shadow rounded" ng-show="responses[endpoint].body" style="margin-top:-10px;">
           <div class="code">
-            <div ng-model="responses[endpoint].bodyString" ng-controller="AceEditor" readonly="readonly" ui-ace="{
+            <div ng-bind-html-unsafe="responses[endpoint].renderedJson"></div>
+            <!-- <div ng-model="responses[endpoint].bodyString" ng-controller="AceEditor" readonly="readonly" ui-ace="{
               useWrapMode : true,
               showGutter: false,
               showPrintGuide: false,
@@ -41,7 +55,7 @@
               mode: 'json',
               onLoad: aceLoaded,
               onChange: aceChanged
-            }"></div>
+            }"></div> -->
           </div>
         </div>
 
