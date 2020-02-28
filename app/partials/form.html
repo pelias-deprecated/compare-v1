@@ -1,0 +1,65 @@
+<style>
+  .form-group {
+    display: flex;
+  }
+  label {
+    padding-right: 20px;
+  }
+  .tag-editor {
+    flex-grow: 1;
+  }
+</style>
+<div id="outer">
+  <form ng-submit="submit()" id="myform">
+    <div class="form-group">
+      <label for="focus">Focus</label>
+      <input
+        type="text"
+        ng-change="change()"
+        ng-model="focus"
+        class="form-control big-form"
+        placeholder="40.74,-74"
+        id="focus"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="text">Query</label>
+
+      <input
+        id="text"
+        type="text"
+        ng-change="change()"
+        ng-model="text"
+        class="form-control big-form"
+        placeholder="London, UK"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="autocomplete">Autocomplete</label>
+
+      <input id="autocomplete" type="checkbox" ng-change="change()" ng-model="autocomplete" />
+    </div>
+
+    <div class="form-group">
+      <label for="endpoints">Hosts</label>
+
+      <textarea id="endpoints" />
+    </div>
+
+    <div class="form-group">
+      <label for="path">Query Path</label>
+      {{path}}
+    </div>
+
+    <input type="submit" />
+    <!-- Ugh, html5 geoloc only works in https -->
+    <!-- <button type="button" ng-click="currentLocation()">Current Location</button> -->
+  </form>
+
+  <div ng-repeat="(i, endpoint) in endpoints">
+    <ng-include src="'/app/partials/view-column.html'" />
+  </div>
+</div>

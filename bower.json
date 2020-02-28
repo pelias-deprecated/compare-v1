@@ -17,7 +17,8 @@
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "font-awesome": "~4.5.0",
     "jquery": "~2.0.3",
-    "uri.js": "~1.15.1"
+    "uri.js": "~1.15.1",
+    "jquery-tag-editor": "~1.0.20"
   },
   "resolutions": {
     "angular": "1.0.8",
