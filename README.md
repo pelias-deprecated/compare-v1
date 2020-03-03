@@ -1,50 +1,34 @@
-# install
+# compare2
 
-```bash
-> [sudo] npm install -g bower;
-> bower install;
-> python -m SimpleHTTPServer 8000
+## Project setup
+```
+yarn install
 ```
 
-# usage
-
-Enter any Pelias query string into the box on the top, and it will query
-multiple Pelias instances with that query, displaying results side by side for easy comparison.
-
-# advanced usage
-
-you can use ```getEndpoints()``` and ```setEndpoints()``` in your browser `Console` tab to change which hosts are being queried, or use ```resetEndpoints()``` to reset to defaults.
-
-your endpoint preferences are stored in `localStorage`, so they will persist between page loads.
-
-# compare against localhost
-
-you can update the endpoints to point to localhost; in your browser `Console` tab type:
-
-```javascript
-> getEndpoints()
-
-[
-  "https://api.geocode.earth",
-  "http://another-pelias.com"
-]
+### Compiles and hot-reloads for development
 ```
-```javascript
-> setEndpoints([
-  "https://api.geocode.earth",
-  "http://another-pelias.com",
-  "http://localhost:3100"
-])
-
-MainController.js:112 saved to localStorage
+yarn serve
 ```
 
-# commit dependencies to github
+### Compiles and minifies for production
+```
+yarn build
+```
 
-please commit your `bower_components/*` to github so they are available on the github CDN.
+### Run your unit tests
+```
+yarn test:unit
+```
 
-# deploy to github.io
+### Run your end-to-end tests
+```
+yarn test:e2e
+```
 
-Github Pages is activated on the master branch, so open PRs as normal.
+### Lints and fixes files
+```
+yarn lint
+```
 
-**note** it can take several minutes before the gh-pages content appears at http://pelias.github.io/compare
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
