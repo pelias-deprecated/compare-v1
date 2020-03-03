@@ -113,10 +113,44 @@ import { VueTagsInput, createTags } from '@johmun/vue-tags-input';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
 
-import FocusModal from './FocusModal.vue';
+/* eslint-disable global-require */
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+
+// app.js
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+import { Icon } from 'leaflet';
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import ViewColumn from './ViewColumn.vue';
+import FocusModal from './FocusModal.vue';
+import '../../node_modules/leaflet/dist/leaflet.css';
+
+import '../main.css';
 
 library.add(faMap);
+
+Vue.config.productionTip = false;
+
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
+
+type D = Icon.Default & {
+  _getIconUrl: string;
+};
+
+// eslint-disable-next-line no-underscore-dangle
+delete (Icon.Default.prototype as D)._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 type Tag = {
   text: string;
@@ -131,7 +165,7 @@ type Tag = {
   },
 })
 export default class CompareView extends Vue {
-  @Prop() private msg!: string;
+  @Prop() private isBuiltForApi!: boolean;
 
   text: string | null = '';
 
@@ -168,7 +202,7 @@ export default class CompareView extends Vue {
   created() {
     // ugh, for historical reasons, we save these in local storage as "endpoints"
     const hosts = window.localStorage.getItem('endpoints');
-    console.info('loaded from localStorage:', (hosts || '').split(',').join(', '));
+    window.console.info('loaded from localStorage:', (hosts || '').split(',').join(', '));
     if (typeof hosts === 'string') {
       if (hosts !== '') {
         this.hosts = createTags(hosts.split(','));
@@ -177,7 +211,11 @@ export default class CompareView extends Vue {
       window.localStorage.setItem('endpoints', '');
     }
     if (this.hosts.length === 0) {
-      this.hosts = createTags(['https://api.geocode.earth', 'https://api.dev.geocode.earth']);
+      if (this.isBuiltForApi) {
+        this.hosts = createTags([`${window.location.protocol}//${window.location.host}`]);
+      } else {
+        this.hosts = createTags(['https://api.geocode.earth', 'https://api.dev.geocode.earth']);
+      }
     }
 
     const hash = window.location.hash.substr(1);
@@ -269,7 +307,7 @@ export default class CompareView extends Vue {
       const host = sections.slice(i).join('.');
       const key = window.localStorage.getItem(`api_key:${host}`);
       if (typeof key === 'string' && key.length) {
-        console.info(`loaded key for domain '${domain}' from localStorage: 'api_key:${host}'`);
+        window.console.info(`loaded key for domain '${domain}' from localStorage: 'api_key:${host}'`);
         return key;
       }
     }
@@ -309,7 +347,7 @@ export default class CompareView extends Vue {
       })
         .then(async (response) => ({ data: await response.json(), status: response.status }))
         .catch((err) => {
-          console.warn(err);
+          window.console.warn(err);
           return {
             status: '',
             data: {
@@ -319,9 +357,6 @@ export default class CompareView extends Vue {
         });
 
       if (!data || !data.geocoding) {
-        console.log('jsonp error', host);
-        console.log(status, data);
-
         // mock response to reuse the UI logic
 
         let message = 'failed to load json';
@@ -348,7 +383,9 @@ export default class CompareView extends Vue {
       .then((r) => {
         this.responses = r;
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        window.console.error(e);
+      });
   }
 
   focusChanged(latlng: L.LatLng) {

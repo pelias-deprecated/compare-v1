@@ -1,34 +1,34 @@
-# compare2
+# compare
+
+A tool for interactively debugging pelias api queries.
+
+This tool has two modes, a standalone mode and a bundled mode.
+
+The standalone mode is what is hosted on https://pelias.github.io/compare/ - it defaults to geocoding against two geocode.earth api servers.
+
+The api mode is what is in-lined into the pelias api server. It defaults to geocoding against the host which it is served from.
 
 ## Project setup
 ```
 yarn install
 ```
-
 ### Compiles and hot-reloads for development
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+This will print out a message telling you what port it's running on locally. Generally http://localhost:8080
+
+### Compiles and minifies for standalone production
 ```
 yarn build
 ```
 
-### Run your unit tests
+Compiled artifacts will be output to dist/
+
+### Compiles and minifies for api production
 ```
-yarn test:unit
+yarn build:api
 ```
 
-### Run your end-to-end tests
-```
-yarn test:e2e
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Compiled artifacts will be output to dist/
