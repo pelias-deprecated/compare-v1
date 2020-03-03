@@ -24,11 +24,11 @@ This will print out a message telling you what port it's running on locally. Gen
 yarn build
 ```
 
-Compiled artifacts will be output to dist/
+Compiled artifacts will be output to docs/
 
 ### Compiles and minifies for api production
 ```
 yarn build:api
 ```
 
-Compiled artifacts will be output to dist/
+Compiled artifacts will be output to docs/
