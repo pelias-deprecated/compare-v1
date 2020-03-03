@@ -87,7 +87,7 @@
 
     <div class="assertion shadow rounded" style="margin-top:-10px;">
       <l-map
-        style="height: 200px; width: 100%;"
+        style="height: 200px;"
         :center="center"
         :zoom="13"
         ref="mymap"
@@ -260,7 +260,7 @@ export default class ViewColumn extends Vue {
 
   mounted() {
     this.renderedJsonStyle = {
-      'max-width': `${90 / this.numHosts}vw}`,
+      'max-width': `${94 / this.numHosts}vw`,
     };
 
     console.log(this.renderedJsonStyle);

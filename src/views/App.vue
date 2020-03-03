@@ -15,7 +15,7 @@ label {
 <template>
   <b-container fluid>
     <b-row>
-      <b-form v-on:submit.prevent="onSubmit" class="w-100">
+      <b-form v-on:submit.prevent="onSubmit" class="w-100 px-4 pb-4">
         <b-form-group label="Query (text):" label-for="input-text" label-cols-sm="2">
           <b-form-input
             class="w-100"
