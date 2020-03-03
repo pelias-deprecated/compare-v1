@@ -1,3 +1,3 @@
 #!/bin/bash
 
-s3cmd sync --acl-public /var/www/pelias/compare/ s3://pelias.compare
+s3cmd sync --acl-public dist/* s3://pelias.compare
