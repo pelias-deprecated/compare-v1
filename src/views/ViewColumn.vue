@@ -263,6 +263,8 @@ export default class ViewColumn extends Vue {
       'max-width': `${90 / this.numHosts}vw}`,
     };
 
+    console.log(this.renderedJsonStyle);
+
     renderjson.set_replacer(renderjsonReplacer);
     renderjson.set_show_to_level('all');
 

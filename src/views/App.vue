@@ -184,7 +184,6 @@ export default class CompareView extends Vue {
     if (hash.length > 0) {
       const parts = hash.split('?');
       const path = parts[0];
-      console.log(path);
       this.autocomplete = path === '/v1/autocomplete';
       const params = new URLSearchParams(parts[1]);
 
@@ -212,7 +211,6 @@ export default class CompareView extends Vue {
 
   getParams() {
     const params = new URLSearchParams(`?${this.extraParams}`);
-    console.log(params.toString());
 
     if (this.focus) {
       const focusParts = this.focus.split(',');
@@ -241,13 +239,11 @@ export default class CompareView extends Vue {
   }
 
   onDebugChange(v: boolean) {
-    console.log('debug now ', v);
     this.debug = v;
     this.onChange();
   }
 
   onChange() {
-    console.log('change, auto?', this.autocomplete);
     this.endpoint = '/v1/search';
     if (this.autocomplete) {
       this.endpoint = '/v1/autocomplete';
@@ -303,11 +299,8 @@ export default class CompareView extends Vue {
         }
       }
 
-      console.log('host:', host);
-      console.log('target:', queryPath);
 
       const urlWithParams = `${host}${queryPath}`;
-      console.log('urlWithParams', urlWithParams);
 
       // eslint-disable-next-line prefer-const
       let { status, data } = await fetch(urlWithParams, {
