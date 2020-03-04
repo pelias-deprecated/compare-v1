@@ -42,18 +42,6 @@ label {
           </div>
         </b-form-group>
 
-        <b-form-group id="input-group-4" label="Options" label-cols-sm="2">
-          <b-form-checkbox
-            id="checkbox-autocomplete"
-            @change="onAutocompleteChange"
-            v-model="autocomplete"
-            >Autocomplete</b-form-checkbox
-          >
-          <b-form-checkbox id="checkbox-debug" @change="onDebugChange" v-model="debug"
-            >Debug</b-form-checkbox
-          >
-        </b-form-group>
-
         <b-form-group id="input-group-5" label="Hosts" label-for="input-hosts" label-cols-sm="2">
           <vue-tags-input
             id="input-hosts"
@@ -75,6 +63,24 @@ label {
             @change="onChange"
           ></b-form-input>
         </b-form-group>
+
+        <div role="group" class="form-row form-group" >
+          <label class="col-sm-2 col-form-label" id="__BVID__21__BV_label_"
+            >Options</label
+          >
+          <div class="bv-no-focus-ring col flex" style="display: flex">
+            <b-form-checkbox
+              id="checkbox-autocomplete"
+              @change="onAutocompleteChange"
+              v-model="autocomplete"
+              >Autocomplete</b-form-checkbox
+            >
+            <b-form-checkbox id="checkbox-debug" @change="onDebugChange" v-model="debug"
+              >Debug</b-form-checkbox
+            >
+          </div>
+        </div>
+
 
         <b-form-group label="Search path" label-for="input-text" label-cols-sm="2">
           <b-form-input
@@ -291,10 +297,6 @@ export default class CompareView extends Vue {
 
     this.queryPath = `${this.endpoint}?${params.toString()}`;
     window.location.hash = this.queryPath;
-
-    if (this.autocomplete) {
-      this.onSubmit();
-    }
   }
 
   // get your own api key for free at https://geocode.earth/
@@ -307,7 +309,9 @@ export default class CompareView extends Vue {
       const host = sections.slice(i).join('.');
       const key = window.localStorage.getItem(`api_key:${host}`);
       if (typeof key === 'string' && key.length) {
-        window.console.info(`loaded key for domain '${domain}' from localStorage: 'api_key:${host}'`);
+        window.console.info(
+          `loaded key for domain '${domain}' from localStorage: 'api_key:${host}'`,
+        );
         return key;
       }
     }
@@ -336,7 +340,6 @@ export default class CompareView extends Vue {
           queryPath += `&api_key=${key}`;
         }
       }
-
 
       const urlWithParams = `${host}${queryPath}`;
 
