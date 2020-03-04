@@ -45,7 +45,7 @@
 </style>
 
 <template>
-  <b-col sm="auto">
+  <b-col :cols="12/numHosts">
     <div class="messages">
       <div
         class="alert alert-danger"
@@ -99,7 +99,7 @@
 
     <div class="assertion shadow rounded" v-if="body" style="margin-top:-10px;">
       <!-- <div class="code"> -->
-      <div class="renderedJson" ref="renderedJson" :style="renderedJsonStyle"></div>
+      <div class="renderedJson" ref="renderedJson"></div>
       <!-- </div> -->
     </div>
   </b-col>
@@ -233,8 +233,6 @@ export default class ViewColumn extends Vue {
 
   private summary = '';
 
-  renderedJsonStyle = {};
-
   center = latLng(47.41322, -1.219482);
 
   url = '//{s}.tiles.mapbox.com/v3/randyme.i0568680/{z}/{x}/{y}.png';
@@ -259,10 +257,6 @@ export default class ViewColumn extends Vue {
   }
 
   mounted() {
-    this.renderedJsonStyle = {
-      'max-width': `${94 / this.numHosts}vw`,
-    };
-
     renderjson.set_replacer(renderjsonReplacer);
     renderjson.set_show_to_level('all');
 
