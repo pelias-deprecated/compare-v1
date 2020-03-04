@@ -1,5 +1,5 @@
 {
-  "name": "compare",
+  "name": "pelias-compare",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -52,5 +52,6 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "files": [ "docs" ]
 }
