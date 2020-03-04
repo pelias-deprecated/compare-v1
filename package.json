@@ -1,6 +1,10 @@
 {
   "name": "pelias-compare",
   "version": "0.1.3",
+  "author": "pelias",
+  "description": "Pelias geocoder frontend comparison and debugging tool",
+  "homepage": "https://github.com/pelias/compare",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build  --dest docs/ src/main.ts",
