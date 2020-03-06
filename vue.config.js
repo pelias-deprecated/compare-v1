@@ -1,3 +1,5 @@
 module.exports = {
-  publicPath: '',
+  publicPath: process.env.SPA_MODE === 'true'
+    ? '/'
+    : '',
 };

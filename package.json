@@ -9,6 +9,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build  --dest docs/ src/main.ts",
     "build:api": "vue-cli-service build --dest dist-api/ src/main-api.ts",
+    "build:spa": "SPA_MODE=true vue-cli-service build  --dest spa/ src/main-spa.ts",
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build:api"
   },
@@ -58,5 +59,8 @@
   },
   "files": [
     "dist-api"
-  ]
+  ],
+  "dependencies": {
+    "@types/geojson": "^7946.0.7"
+  }
 }

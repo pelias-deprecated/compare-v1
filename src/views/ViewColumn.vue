@@ -68,17 +68,7 @@
         <span class="title">&nbsp;{{ host }}</span>
       </h4>
       <div class="code rounded" v-if="body.features && body.features.length">
-        <ol>
-          <li
-            class="summary"
-            @click="clickFeature(feature)"
-            v-for="feature in body.features"
-            :key="feature.properties.id"
-          >
-            <font-awesome-icon :icon="iconForLayer(feature.properties.layer)" />
-            {{ feature.properties.label }}
-          </li>
-        </ol>
+        <ResultsSummary :features="body.features" v-on:feature-clicked="featureClicked"/>
       </div>
       <div class="code rounded" v-else>
         No Results
@@ -93,7 +83,7 @@
         ref="mymap"
         :options="{ scrollWheelZoom: false }"
       >
-        <l-tile-layer :url="url" :attribution="attribution" />
+        <l-tile-layer :url="url" />
       </l-map>
     </div>
 
@@ -113,25 +103,12 @@ import * as L from 'leaflet';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faMap,
-  faUniversity,
-  faGavel,
-  faDrawPolygon,
-  faMapPin,
-  faGlobe,
-  faVectorSquare,
   faObjectUngroup,
-  faFlagCheckered,
-  faMapMarker,
-  faEnvelope,
-  faCrosshairs,
-  faRoad,
-  faQuestion,
-  faAmericanSignLanguageInterpreting,
   faDotCircle,
   faMapSigns,
   faLanguage,
 } from '@fortawesome/free-solid-svg-icons';
-import { faCuttlefish, faWeebly } from '@fortawesome/free-brands-svg-icons';
+import { faWeebly } from '@fortawesome/free-brands-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 import { latLng } from 'leaflet';
@@ -139,28 +116,15 @@ import { latLng } from 'leaflet';
 import AwesomeMarkers from '@/vendor/leaflet.awesome-markers';
 import '@/vendor/leaflet.awesome-markers.css';
 
+import ResultsSummary from './ResultsSummary.vue';
+
 [
   faWeebly,
   faDotCircle,
   faMapSigns,
   faLanguage,
-  faCuttlefish,
   faMap,
-  faUniversity,
-  faGavel,
-  faDrawPolygon,
-  faMapPin,
-  faGlobe,
-  faVectorSquare,
   faObjectUngroup,
-  faFlagCheckered,
-  faMapMarker,
-  faEnvelope,
-  faCrosshairs,
-  faRoad,
-  faQuestion,
-  faAmericanSignLanguageInterpreting,
-  faMap,
 ].forEach((i) => library.add(i));
 
 function parseHTML(s: string) {
@@ -220,7 +184,7 @@ const markers = {
 };
 
 @Component({
-  components: { FontAwesomeIcon },
+  components: { FontAwesomeIcon, ResultsSummary },
 })
 export default class ViewColumn extends Vue {
   @Prop() private body!: any;
@@ -241,7 +205,7 @@ export default class ViewColumn extends Vue {
 
   // attribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
-  centerFeatures(features: any) {
+  centerFeatures(features: GeoJSON.FeatureCollection) {
     const geoJsonLayer = L.geoJSON(features);
 
     let bounds = geoJsonLayer.getBounds();
@@ -279,7 +243,7 @@ export default class ViewColumn extends Vue {
       }
     }
     // all custom icon logic
-    const pointToLayer = function style(f: any, latlon: L.LatLng) {
+    const pointToLayer = function style(f: GeoJSON.Feature, latlon: L.LatLng) {
       let i = markers.default;
 
       // custom icon created from geojson properties
@@ -289,7 +253,7 @@ export default class ViewColumn extends Vue {
           markerColor: f.properties['marker-color'] || 'red',
         });
       } else {
-        switch (f.properties.source) {
+        switch (f.properties?.source) {
           case 'openstreetmap':
           case 'osm':
             i = markers.openstreetmap;
@@ -317,10 +281,10 @@ export default class ViewColumn extends Vue {
       }
 
       return L.marker(latlon, {
-        title: `${f.properties.gid} - ${f.properties.label}`,
+        title: `${f.properties?.gid} - ${f.properties?.label}`,
         icon: i,
       }).bindPopup(
-        `<p><strong style="font-size:14px">${f.properties.label}</strong><br />${f.properties.gid}</p>`,
+        `<p><strong style="font-size:14px">${f.properties?.label}</strong><br />${f.properties?.gid}</p>`,
       );
     };
 
@@ -375,41 +339,7 @@ export default class ViewColumn extends Vue {
     this.getMap().addLayer(bboxLayer);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  iconForLayer(layer: string) {
-    switch (layer) {
-      case 'locality':
-        return faUniversity;
-      case 'localadmin':
-        return faGavel;
-      case 'neighbourhood':
-        return faDrawPolygon;
-      case 'borough':
-        return faMapPin;
-      case 'county':
-        return faCuttlefish;
-      case 'macrocounty':
-        return faGlobe;
-      case 'region':
-        return faVectorSquare;
-      case 'macroregion':
-        return faObjectUngroup;
-      case 'country':
-        return faFlagCheckered;
-      case 'venue':
-        return faMapMarker;
-      case 'address':
-        return faEnvelope;
-      case 'mixed':
-        return faCrosshairs;
-      case 'street':
-        return faRoad;
-      default:
-        return faQuestion;
-    }
-  }
-
-  clickFeature(feature: any) {
+  featureClicked(feature: GeoJSON.Feature) {
     const geojson = L.geoJSON(feature);
     const bounds = geojson.getBounds();
     this.getMap().setView(bounds.getCenter(), 6);

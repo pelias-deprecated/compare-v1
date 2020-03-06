@@ -16,7 +16,12 @@ label {
   <b-container fluid>
     <b-row>
       <b-form v-on:submit.prevent="onSubmit" class="w-100 px-4 pb-4">
-        <b-form-group label="Query (text):" label-for="input-text" label-cols-sm="2">
+        <b-form-group
+          label="Query (text):"
+          label-for="input-text"
+          label-cols-sm="2"
+          v-if="endpointUsesText"
+        >
           <b-form-input
             class="w-100"
             id="input-text"
@@ -27,16 +32,39 @@ label {
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="Focus" label-for="input-focus" label-cols-sm="2">
+        <b-form-group
+          label="Ids (comma separated):"
+          label-for="input-ids"
+          label-cols-sm="2"
+          v-if="endpointUsesIds"
+        >
+          <b-form-input
+            class="w-100"
+            id="input-ids"
+            required
+            placeholder="openstreetmap:venue:way/5013364,whosonfirst:borough:421205771"
+            v-model="ids"
+            @change="onChange"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          id="input-group-2"
+          :label="pointLabel"
+          label-for="input-point"
+          label-cols-sm="2"
+          v-if="endpointUsesPoint"
+        >
           <div style="display: flex">
             <b-form-input
-              id="input-focus"
+              id="input-point"
               placeholder="40.74, -74"
-              v-model="focus"
-              @change="onChange"
+              v-model="pointStr"
+              @change="onPointChange"
+              :required="isPointRequired"
             ></b-form-input>
 
-            <b-button v-b-modal.modal-focus>
+            <b-button v-b-modal.modal-point>
               <font-awesome-icon :icon="['fa', 'map']" />
             </b-button>
           </div>
@@ -64,27 +92,42 @@ label {
           ></b-form-input>
         </b-form-group>
 
-        <div role="group" class="form-row form-group" >
-          <label class="col-sm-2 col-form-label" id="__BVID__21__BV_label_"
-            >Options</label
-          >
-          <div class="bv-no-focus-ring col flex" style="display: flex">
-            <b-form-checkbox
-              id="checkbox-autocomplete"
-              @change="onAutocompleteChange"
-              v-model="autocomplete"
-              >Autocomplete</b-form-checkbox
-            >
+        <div role="group" class="form-row form-group">
+          <label class="col-sm-2 col-form-label">Options</label>
+          <div class="bv-no-point-ring col flex">
             <b-form-checkbox id="checkbox-debug" @change="onDebugChange" v-model="debug"
               >Debug</b-form-checkbox
             >
           </div>
         </div>
 
+        <div role="group" class="form-row form-group">
+          <label class="col-sm-2 col-form-label">Endpoint</label>
+          <div class="col-sm-10" style="display:flex">
+            <b-form-radio v-model="endpoint" @change="onEndpointChange" value="/v1/search"
+              >Geocode</b-form-radio
+            >
+            <b-form-radio v-model="endpoint" @change="onEndpointChange" value="/v1/autocomplete"
+              >Autocomplete</b-form-radio
+            >
+            <b-form-radio v-model="endpoint" @change="onEndpointChange" value="/v1/reverse"
+              >Reverse Geocode</b-form-radio
+            >
+            <b-form-radio
+              v-model="endpoint"
+              @change="onEndpointChange"
+              value="/v1/search/structured"
+              >Structured Geocode</b-form-radio
+            >
+            <b-form-radio v-model="endpoint" @change="onEndpointChange" value="/v1/place"
+              >Place</b-form-radio
+            >
+          </div>
+        </div>
 
-        <b-form-group label="Search path" label-for="input-text" label-cols-sm="2">
+        <b-form-group label="Search path" label-for="input-search-path" label-cols-sm="2">
           <b-form-input
-            id="input-text"
+            id="input-search-path"
             required
             placeholder="/v1/autocomplete?text=london"
             v-model="queryPath"
@@ -105,8 +148,13 @@ label {
       />
     </b-row>
 
-    <b-modal id="modal-focus" title="Focus" @shown="focusModalShown">
-      <FocusModal ref="focusModal" v-on:focus-changed="focusChanged" />
+    <b-modal id="modal-point" :title="pointLabel" @shown="pointModalShown">
+      <PointModal
+        ref="pointModal"
+        :lat="pointLat"
+        :lng="pointLng"
+        v-on:point-changed="pointChanged"
+      />
     </b-modal>
   </b-container>
 </template>
@@ -119,6 +167,8 @@ import { VueTagsInput, createTags } from '@johmun/vue-tags-input';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
 
+import * as L from 'leaflet';
+
 /* eslint-disable global-require */
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
@@ -129,7 +179,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { Icon } from 'leaflet';
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import ViewColumn from './ViewColumn.vue';
-import FocusModal from './FocusModal.vue';
+import PointModal from './PointModal.vue';
 import '../../node_modules/leaflet/dist/leaflet.css';
 
 import '../main.css';
@@ -164,7 +214,7 @@ type Tag = {
 
 @Component({
   components: {
-    FocusModal,
+    PointModal,
     VueTagsInput,
     FontAwesomeIcon,
     ViewColumn,
@@ -173,9 +223,15 @@ type Tag = {
 export default class CompareView extends Vue {
   @Prop() private isBuiltForApi!: boolean;
 
+  @Prop() private isBuiltForSpa!: boolean;
+
+  ids: string | null = '';
+
   text: string | null = '';
 
-  private focus: string | null = '';
+  private point: L.LatLng | null = null;
+
+  private pointStr: string | null = '';
 
   private host = '';
 
@@ -192,10 +248,10 @@ export default class CompareView extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private responses: any[] = [];
 
-  private endpoint = '';
+  private endpoint = '/v1/search';
 
-  focusModalShown() {
-    (this.$refs.focusModal as FocusModal).invalidateSize();
+  pointModalShown() {
+    (this.$refs.pointModal as PointModal).invalidateSize();
   }
 
   tagsChanged(newHosts: Tag[]) {
@@ -224,11 +280,25 @@ export default class CompareView extends Vue {
       }
     }
 
-    const hash = window.location.hash.substr(1);
+    // If we're running in non-SPA mode with routing like
+    // http://blackmad.github.io/pelias-compare/index.html#/v1/search?text=....
+    let hash = window.location.hash.substr(1);
+    // If we're running in SPA mode with routing like
+    // http://localhost:8080/v1/search?text=San+Nicolas%2C+Peru&debug=0
+    if (this.isBuiltForSpa) {
+      hash = `/v1/${window.location.href.split('/v1/')[1]}`;
+    }
+
+    // As a hueristic, only decode as uri component if there's a uri
+    // escaped question mark in there. Copy and pasting a path onto the
+    // url hash string won't automatically do this
+    if (hash.includes('%3F')) {
+      hash = decodeURIComponent(hash);
+    }
     if (hash.length > 0) {
       const parts = hash.split('?');
-      const path = parts[0];
-      this.autocomplete = path === '/v1/autocomplete';
+      // eslint-disable-next-line prefer-destructuring
+      this.endpoint = parts[0];
       const params = new URLSearchParams(parts[1]);
 
       this.debug = params.get('debug') === '1';
@@ -237,16 +307,37 @@ export default class CompareView extends Vue {
       this.text = params.get('text');
       params.delete('text');
 
-      this.focus = params.get('focus.point.lat')
-        ? `${params.get('focus.point.lat')},${params.get('focus.point.lon')}`
-        : null;
+      this.ids = params.get('ids');
+      params.delete('ids');
 
-      params.delete('focus.point.lat');
-      params.delete('focus.point.lon');
+      const parsePoint = (_prefix?: string) => {
+        const prefix = _prefix ? `${_prefix}.` : '';
+
+        const lat = params.get(`${prefix}point.lat`);
+        const lon = params.get(`${prefix}point.lon`);
+        if (!lat || !lon) {
+          return null;
+        }
+
+        params.delete(`${prefix}point.lat`);
+        params.delete(`${prefix}point.lon`);
+
+        const latlng = new L.LatLng(parseFloat(lat.trim()), parseFloat(lon.trim()));
+
+        this.pointStr = `${latlng.lat},${latlng.lng}`;
+
+        return latlng;
+      };
+
+      this.point = parsePoint() || parsePoint('focus');
 
       this.extraParams = params.toString();
 
-      if (this.text) {
+      if (
+        (this.text && this.endpointUsesText)
+        || (this.point && this.isPointRequired)
+        || (this.ids && this.endpointUsesIds)
+      ) {
         this.onChange();
         this.onSubmit();
       }
@@ -256,17 +347,22 @@ export default class CompareView extends Vue {
   getParams() {
     const params = new URLSearchParams(`?${this.extraParams}`);
 
-    if (this.focus) {
-      const focusParts = this.focus.split(',');
-      // TODO(blackmad): do something here if it's invalid
-      const lat = focusParts[0].trim();
-      const lon = focusParts[1].trim();
-      params.set('focus.point.lat', lat);
-      params.set('focus.point.lon', lon);
+    if (this.point && this.endpointUsesPoint) {
+      if (this.endpointUsesFocus) {
+        params.set('focus.point.lat', this.point.lat.toString());
+        params.set('focus.point.lon', this.point.lng.toString());
+      } else {
+        params.set('point.lat', this.point.lat.toString());
+        params.set('point.lon', this.point.lng.toString());
+      }
     }
 
-    if (this.text) {
+    if (this.text && this.endpointUsesText) {
       params.set('text', this.text);
+    }
+
+    if (this.ids && this.endpointUsesIds) {
+      params.set('ids', this.ids);
     }
 
     if (this.debug !== undefined) {
@@ -275,28 +371,37 @@ export default class CompareView extends Vue {
     return params;
   }
 
-  // We need these because checkboxes don't seem to sync before calling change
+  // We need this because checkboxes don't seem to sync before calling change
   // unlike text fields
-  onAutocompleteChange(v: boolean) {
-    this.autocomplete = v;
-    this.onChange();
-  }
-
   onDebugChange(v: boolean) {
     this.debug = v;
     this.onChange();
   }
 
-  onChange() {
-    this.endpoint = '/v1/search';
-    if (this.autocomplete) {
-      this.endpoint = '/v1/autocomplete';
-    }
+  // We need this because checkboxes don't seem to sync before calling change
+  // unlike text fields
+  onEndpointChange(v: string) {
+    this.endpoint = v;
+    this.onChange();
+  }
 
+  onPointChange(v: string) {
+    const parts = v.split(',');
+    this.point = new L.LatLng(parseFloat(parts[0].trim()), parseFloat(parts[1].trim()));
+    this.onChange();
+  }
+
+  onChange() {
     const params = this.getParams();
 
     this.queryPath = `${this.endpoint}?${params.toString()}`;
-    window.location.hash = this.queryPath;
+    if (this.isBuiltForSpa) {
+      window.history.replaceState({}, '', this.queryPath);
+    } else {
+      window.location.hash = this.queryPath;
+    }
+
+    this.$forceUpdate();
   }
 
   // get your own api key for free at https://geocode.earth/
@@ -391,8 +496,45 @@ export default class CompareView extends Vue {
       });
   }
 
-  focusChanged(latlng: L.LatLng) {
-    this.focus = `${latlng.lat},${latlng.lng}`;
+  pointChanged(latlng: L.LatLng) {
+    this.pointStr = `${latlng.lat},${latlng.lng}`;
+  }
+
+  get endpointUsesText() {
+    return ['/v1/search', '/v1/autocomplete'].includes(this.endpoint);
+  }
+
+  get endpointUsesIds() {
+    return ['/v1/place'].includes(this.endpoint);
+  }
+
+  get isPointRequired() {
+    return this.endpoint === '/v1/reverse';
+  }
+
+  get endpointUsesPoint() {
+    return ['/v1/search', '/v1/autocomplete', '/v1/search/structured', '/v1/reverse'].includes(
+      this.endpoint,
+    );
+  }
+
+  get endpointUsesFocus() {
+    return ['/v1/search', '/v1/autocomplete', '/v1/search/structured'].includes(this.endpoint);
+  }
+
+  get pointLabel() {
+    if (this.endpointUsesFocus) {
+      return 'Focus';
+    }
+    return 'Point';
+  }
+
+  get pointLat() {
+    return this.point?.lat;
+  }
+
+  get pointLng() {
+    return this.point?.lng;
   }
 }
 </script>
