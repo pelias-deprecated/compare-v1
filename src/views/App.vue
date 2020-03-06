@@ -285,7 +285,7 @@ export default class CompareView extends Vue {
     let hash = window.location.hash.substr(1);
     // If we're running in SPA mode with routing like
     // http://localhost:8080/v1/search?text=San+Nicolas%2C+Peru&debug=0
-    if (this.isBuiltForSpa) {
+    if (this.isBuiltForSpa && window.location.pathname.length > 1) {
       hash = `/v1/${window.location.href.split('/v1/')[1]}`;
     }
 
